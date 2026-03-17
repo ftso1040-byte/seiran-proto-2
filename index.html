@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>銀座 聖藍 | 東京・銀座の本格江戸前寿司</title>
+    
+    <!-- Google Fonts: 凛とした和を表現するShippori MinchoとNoto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. CSS Variables & Reset
+           ========================================================================== */
+        :root {
+            /* 「聖藍」の名にふさわしい、黒に近い極めて深い藍色に調整 */
+            --color-bg: #030508; 
+            --color-text: #F5F5F0; /* 和紙のような白 */
+            --color-text-muted: #888888;
+            --color-accent: #C1A063; /* 深い藍に映える落ち着いた金 */
+            --color-border: rgba(255, 255, 255, 0.15);
+            
+            /* Fluid Typography */
+            --font-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.85rem);
+            --font-sm: clamp(0.875rem, 0.8vw + 0.5rem, 1rem);
+            --font-base: clamp(1rem, 1vw + 0.5rem, 1.125rem);
+            --font-lg: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
+            --font-xl: clamp(2rem, 3vw + 1rem, 3.5rem);
+            --font-xxl: clamp(3rem, 6vw + 1rem, 6rem);
+            
+            /* Fluid Spacing */
+            --space-xs: clamp(1rem, 2vw, 1.5rem);
+            --space-sm: clamp(2rem, 4vw, 3rem);
+            --space-md: clamp(4rem, 8vw, 6rem);
+            --space-lg: clamp(6rem, 12vw, 10rem);
+            --space-xl: clamp(10rem, 15vw, 15rem);
+
+            --font-serif: 'Shippori Mincho', serif;
+            --font-sans: 'Noto Sans JP', sans-serif;
+            
+            --header-height: 80px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: auto; /* GSAP使用のため */
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: var(--font-base);
+            line-height: 2;
+            letter-spacing: 0.1em;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+
+        .text-serif { font-family: var(--font-serif); }
+        .text-accent { color: var(--color-accent); }
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            line-height: 2.5;
+            letter-spacing: 0.2em;
+        }
+
+        /* Utils */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-sm);
+        }
+        
+        .container-narrow {
+            max-width: 800px;
+        }
+
+        .section-padding {
+            padding: var(--space-xl) 0;
+        }
+
+        /* ==========================================================================
+           2. Loading Screen
+           ========================================================================== */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--color-bg);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loader-logo {
+            font-family: var(--font-serif);
+            font-size: var(--font-xl);
+            letter-spacing: 0.2em;
+            opacity: 0;
+        }
+
+        /* ==========================================================================
+           3. Header & Navigation (Hamburger)
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            height: var(--header-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--space-sm);
+            z-index: 1000;
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(3, 5, 8, 0.85); /* 藍色ベースの透過 */
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header-logo {
+            font-family: var(--font-serif);
+            font-size: var(--font-lg);
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            opacity: 0; /* GSAPで表示 */
+        }
+
+        /* Hamburger Button */
+        .menu-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1001;
+            opacity: 0; /* GSAPで表示 */
+            background: none;
+            border: none;
+        }
+
+        .menu-btn-line {
+            position: absolute;
+            left: 5px;
+            width: 30px;
+            height: 1px;
+            background-color: var(--color-text);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .menu-btn-line:nth-child(1) { top: 12px; }
+        .menu-btn-line:nth-child(2) { top: 20px; }
+        .menu-btn-line:nth-child(3) { top: 28px; }
+
+        .menu-btn.active .menu-btn-line:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .menu-btn.active .menu-btn-line:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-btn.active .menu-btn-line:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Fullscreen Navigation Overlay */
+        .nav-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: rgba(3, 5, 8, 0.98);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s 0.5s, opacity 0.5s ease;
+        }
+
+        .nav-overlay.active {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s, opacity 0.5s ease;
+        }
+
+        .nav-list {
+            text-align: center;
+        }
+
+        .nav-item {
+            margin: var(--space-xs) 0;
+            overflow: hidden;
+        }
+
+        .nav-link {
+            display: block;
+            font-family: var(--font-serif);
+            font-size: var(--font-xl);
+            letter-spacing: 0.1em;
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+        }
+
+        .nav-overlay.active .nav-link {
+            transform: translateY(0);
+        }
+
+        .nav-item:nth-child(1) .nav-link { transition-delay: 0.1s; }
+        .nav-item:nth-child(2) .nav-link { transition-delay: 0.2s; }
+        .nav-item:nth-child(3) .nav-link { transition-delay: 0.3s; }
+        .nav-item:nth-child(4) .nav-link { transition-delay: 0.4s; }
+
+        .nav-link:hover {
+            color: var(--color-accent);
+        }
+
+        /* ==========================================================================
+           4. Hero Section (Video/Image Background)
+           ========================================================================== */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-bg-wrap {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+        }
+
+        .hero-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.1); /* ロード時のズームアウト用 */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(3,5,8,0.3) 0%, rgba(3,5,8,0.7) 100%);
+            z-index: -1;
+        }
+
+        .hero-title {
+            font-size: var(--font-xxl);
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            /* GSAPで一文字ずつ出すためにopacity 0スタート */
+            opacity: 0; 
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: var(--space-sm);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0; /* GSAP表示用 */
+        }
+
+        .scroll-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background-color: rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 50%;
+            background-color: var(--color-accent);
+            animation: scrollDown 2s infinite ease-in-out;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(200%); }
+        }
+
+        /* ==========================================================================
+           5. Message / Concept Section
+           ========================================================================== */
+        .message-section {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .message-content {
+            display: flex;
+            gap: var(--space-md);
+            /* スマホでは横書き、PCでは縦書きに */
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .message-content {
+                flex-direction: row-reverse; /* 縦書きは右から左へ読ませるため */
+                align-items: flex-start;
+                text-align: left;
+            }
+            .message-text {
+                writing-mode: vertical-rl;
+                text-orientation: upright;
+                height: 50vh; /* 縦書きの領域確保 */
+                line-height: 2.5;
+                letter-spacing: 0.3em;
+            }
+            .message-title {
+                writing-mode: vertical-rl;
+                text-orientation: upright;
+                margin-left: var(--space-md);
+            }
+        }
+
+        .message-title {
+            font-size: var(--font-xl);
+            color: var(--color-accent);
+            letter-spacing: 0.2em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .message-text {
+            font-size: var(--font-lg);
+            color: var(--color-text);
+        }
+
+        /* ==========================================================================
+           6. Menu Overview Section (Refined for Seiran)
+           ========================================================================== */
+        .menu-overview {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #05080c; /* 少しだけ明るい藍色でセクションを区切る */
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-title-en {
+            font-family: var(--font-sans);
+            font-size: var(--font-sm);
+            color: var(--color-accent);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title-ja {
+            font-size: var(--font-xl);
+            letter-spacing: 0.15em;
+        }
+
+        .menu-overview-text {
+            font-size: var(--font-lg);
+            line-height: 2.2;
+            margin-bottom: var(--space-lg);
+            color: var(--color-text);
+            /* テキストが画像の下に隠れないよう最前面に設定 */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Elegant Button */
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xs);
+            margin-top: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        @media (min-width: 768px) {
+            .photo-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-sm);
+            }
+            .photo-grid.three-cols {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .photo-wrap {
+            width: 100%;
+            height: 35vh; /* 程よい高さ */
+            overflow: hidden;
+            position: relative;
+            /* iOS等での画像はみ出しバグを防ぐ */
+            transform: translateZ(0); 
+        }
+
+        @media (min-width: 768px) {
+            .photo-wrap { height: 45vh; }
+        }
+
+        .photo-img {
+            /* パララックス画像を枠内に絶対配置で固定 */
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 120%; /* パララックスのための余白 */
+            object-fit: cover;
+        }
+
+        /* ==========================================================================
+           7. Commitment / Space Section (Horizontal Scroll/Fade)
+           ========================================================================== */
+        .space-section {
+            text-align: center;
+        }
+
+        .space-image-large-wrap {
+            width: 100%;
+            height: 70vh;
+            margin: var(--space-md) 0;
+            overflow: hidden;
+            position: relative;
+            transform: translateZ(0);
+        }
+
+        .space-image-large-img {
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+        }
+
+        .space-text {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: var(--font-lg);
+            line-height: 2.2;
+            /* テキストが画像の下に隠れないよう最前面に設定 */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ==========================================================================
+           7. Commitment / Space Section (Horizontal Scroll/Fade)
+           ========================================================================== */
+        .space-section {
+            text-align: center;
+        }
+
+        .space-image-large-wrap {
+            width: 100%;
+            height: 70vh;
+            margin: var(--space-md) 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .space-image-large-img {
+            width: 100%;
+            height: 120%;
+            object-fit: cover;
+        }
+
+        .space-text {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: var(--font-lg);
+            line-height: 2.2;
+        }
+
+        /* ==========================================================================
+           8. Information Section (Table)
+           ========================================================================== */
+        .info-section {
+            background-color: #05080c;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--space-md);
+        }
+
+        .info-table th, .info-table td {
+            padding: var(--space-xs) 0;
+            border-bottom: 1px solid var(--color-border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .info-table th {
+            width: 30%;
+            font-family: var(--font-serif);
+            color: var(--color-accent);
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .info-table th, .info-table td {
+                display: block;
+                width: 100%;
+            }
+            .info-table th { border-bottom: none; padding-bottom: 0; }
+            .info-table td { padding-top: 0.5rem; padding-bottom: 1.5rem; }
+        }
+
+        /* ==========================================================================
+           9. Map & Footer
+           ========================================================================== */
+        .map-wrap {
+            width: 100%;
+            height: 50vh;
+            background-color: #030508;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--color-text-muted);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        footer {
+            padding: var(--space-md) var(--space-sm);
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: var(--font-xl);
+            display: block;
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer-info {
+            font-size: var(--font-sm);
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-md);
+            line-height: 2;
+        }
+
+        .copyright {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0.1em;
+        }
+
+        /* Fixed Reservation Button */
+        .fixed-reserve-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--color-accent);
+            color: #000;
+            font-family: var(--font-serif);
+            font-size: var(--font-sm);
+            font-weight: 600;
+            padding: 15px 30px;
+            border-radius: 2px;
+            letter-spacing: 0.1em;
+            z-index: 990;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            opacity: 0; /* GSAPで表示 */
+            pointer-events: none; /* 初期状態はクリック不可 */
+        }
+
+        .fixed-reserve-btn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .fixed-reserve-btn:hover {
+            background-color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* ==========================================================================
+           Animation Utility Classes
+           ========================================================================== */
+        .reveal-up { opacity: 0; transform: translateY(40px); }
+        .reveal-fade { opacity: 0; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-logo">銀座 聖藍</div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <a href="#" class="header-logo">銀座 聖藍</a>
+        <button class="menu-btn" id="menu-btn" aria-label="Menu">
+            <span class="menu-btn-line"></span>
+            <span class="menu-btn-line"></span>
+            <span class="menu-btn-line"></span>
+        </button>
+    </header>
+
+    <!-- Fullscreen Navigation -->
+    <nav class="nav-overlay" id="nav-overlay">
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#" class="nav-link">Top</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Concept</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Menu</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">Information</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-bg-wrap">
+                <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2000&auto=format&fit=crop" class="hero-bg" id="hero-bg" alt="ヒーロー画像">
+            </div>
+            <div class="hero-overlay"></div>
+            
+            <h1 class="hero-title text-serif" id="hero-title">銀座 聖藍</h1>
+            
+            <div class="scroll-indicator" id="scroll-indicator">
+                <span class="scroll-text">Scroll</span>
+                <span class="scroll-line"></span>
+            </div>
+        </section>
+
+        <!-- Message / Concept -->
+        <section class="message-section section-padding container">
+            <div class="message-content">
+                <h2 class="message-title text-serif reveal-up">銀座の隠れ家で味わう、<br>四季折々の味わい。</h2>
+                <p class="message-text text-serif reveal-up">
+                    「銀座鈴らん通り」にひっそりと佇む、<br>
+                    四季の移ろいを感じる本格江戸前寿司。<br>
+                    <br>
+                    長きにわたり名店で研鑽を重ねた職人が、<br>
+                    奇をてらわず、素材の命を活かしきる<br>
+                    「本物の味」を追求しております。<br>
+                    <br>
+                    選び抜かれた美しい器と、<br>
+                    洗練された技が光る極上の一貫。<br>
+                    五感で味わう至福のひとときをご堪能ください。
+                </p>
+            </div>
+        </section>
+
+        <!-- Menu Overview Section -->
+        <section class="menu-overview section-padding">
+            <div class="container">
+                <div class="section-header reveal-up">
+                    <span class="section-title-en">Menu</span>
+                    <h2 class="section-title-ja text-serif">お品書き</h2>
+                </div>
+                
+                <p class="menu-overview-text text-serif reveal-up" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+                    その日の最高の仕入れで決まる<br>
+                    月替わりのおまかせコースをご用意しております。<br>
+                    お昼、夜ともに四季の彩りを映し出す旬の魚介と、<br>
+                    こだわりのシャリを用いた江戸前寿司をお楽しみください。<br>
+                    お料理に寄り添うお酒も各種取り揃えております。
+                </p>
+
+                <!-- 料理の写真を充実させるギャラリー -->
+                <div class="photo-grid">
+                    <div class="photo-wrap reveal-fade">
+                        <img src="https://images.unsplash.com/photo-1611143669185-af224c5e3252?q=80&w=1000&auto=format&fit=crop" class="photo-img parallax-img" alt="おまかせ握り">
+                    </div>
+                    <div class="photo-wrap reveal-fade">
+                        <img src="https://images.unsplash.com/photo-1599940824399-b87987ceb72a?q=80&w=1000&auto=format&fit=crop" class="photo-img parallax-img" alt="日本酒">
+                    </div>
+                </div>
+
+                <div class="reveal-up" style="text-align: center; margin-top: var(--space-md);">
+                    <a href="/menu" class="elegant-btn">
+                        詳しくはこちら
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Space / Commitment -->
+        <section class="space-section section-padding">
+            <div class="container container-narrow">
+                <div class="section-header reveal-up">
+                    <span class="section-title-en">Space</span>
+                    <h2 class="section-title-ja text-serif">空間・おもてなし</h2>
+                </div>
+                <p class="space-text text-serif reveal-up">
+                    銀座の隠れ家にふさわしい、凛とした落ち着きのある和の空間。<br>
+                    職人の手捌きを間近で楽しめる白木のカウンター席のほか、<br>
+                    ご接待やご会食に最適な個室もご用意しております。<br>
+                </p>
+            </div>
+            
+            <div class="space-image-large-wrap reveal-fade">
+                <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=2000&auto=format&fit=crop" class="space-image-large-img parallax-img" alt="カウンター席">
+            </div>
+            
+            <div class="container reveal-up">
+                <!-- 空間の写真を充実させるギャラリー -->
+                <div class="photo-grid three-cols" style="margin-top: 0;">
+                    <div class="photo-wrap reveal-fade">
+                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1000&auto=format&fit=crop" class="photo-img parallax-img" alt="個室">
+                    </div>
+                    <div class="photo-wrap reveal-fade">
+                        <img src="https://images.unsplash.com/photo-1563131763-7eb9273907eb?q=80&w=1000&auto=format&fit=crop" class="photo-img parallax-img" alt="職人の技">
+                    </div>
+                    <div class="photo-wrap reveal-fade">
+                        <img src="https://images.unsplash.com/photo-1633504581786-316c8002b1b9?q=80&w=1000&auto=format&fit=crop" class="photo-img parallax-img" alt="和食器">
+                    </div>
+                </div>
+
+                <p class="space-text text-serif" style="margin-top: var(--space-md);">
+                    こだわりの握り、選び抜かれた美しい器、佇まい、<br>
+                    そして、お客様一人ひとりに寄り添うおもてなし。<br>
+                    日本文化の粋を極めたこの場所で、<br>
+                    心安らぐ特別な時間をお約束いたします。
+                </p>
+            </div>
+        </section>
+
+        <!-- Information (Table) -->
+        <section class="info-section section-padding">
+            <div class="container container-narrow">
+                <div class="section-header reveal-up">
+                    <span class="section-title-en">Information</span>
+                    <h2 class="section-title-ja text-serif">店舗情報</h2>
+                </div>
+                
+                <table class="info-table reveal-up">
+                    <tbody>
+                        <tr><th>店舗名</th><td>銀座 聖藍（ぎんざ せいらん）</td></tr>
+                        <tr><th>所在地</th><td>〒104-0061 東京都中央区銀座6-9-14 方圓ビル2階</td></tr>
+                        <tr><th>TEL</th><td>03-3572-6555</td></tr>
+                        <tr><th>営業時間</th><td>11:30～22:30</td></tr>
+                        <tr><th>定休日</th><td>水曜日、日曜日</td></tr>
+                        <tr><th>席数</th><td>カウンター・個室</td></tr>
+                        <tr><th>アクセス</th><td>東京メトロ銀座線・丸ノ内線・日比谷線「銀座駅」より徒歩約3分</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Map -->
+        <div class="map-wrap reveal-fade" style="flex-direction: column; height: auto; padding: 0;">
+            <div style="width: 100%; height: 50vh;">
+                <!-- 住所のみで検索し、強制的にピンを立てるパラメータを付与 -->
+                <iframe 
+                    src="https://maps.google.com/maps?q=東京都中央区銀座6-9-14&t=m&z=16&output=embed&iwloc=Near" 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    aria-hidden="false" 
+                    tabindex="0">
+                </iframe>
+            </div>
+            <!-- ルート案内ボタンの追加 -->
+            <div style="padding: var(--space-sm) 0; background-color: var(--color-bg); width: 100%; text-align: center;">
+                <p class="text-serif" style="margin-bottom: 1rem; font-size: var(--font-sm); color: var(--color-text-muted);">
+                    お気をつけてお越しくださいませ。
+                </p>
+                <!-- Google Mapsのルート検索URL (現在地または銀座駅からの経路) -->
+                <a href="https://www.google.com/maps/dir/?api=1&origin=銀座駅&destination=東京都中央区銀座6-9-14+方圓ビル" target="_blank" rel="noopener noreferrer" class="elegant-btn" style="padding: 12px 30px; font-size: 0.9rem;">
+                    銀座駅からの経路を見る (Google Maps)
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <a href="#" class="footer-logo">銀座 聖藍</a>
+        <div class="footer-info text-serif">
+            東京都中央区銀座6-9-14 方圓ビル2階<br>
+            03-3572-6555
+        </div>
+        <p class="copyright">&copy; Ginza Seiran. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Fixed Reservation Button -->
+    <a href="#" class="fixed-reserve-btn" id="fixed-reserve-btn">ご予約</a>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            /* =================================================================
+               1. Initial Loading Sequence
+               ================================================================= */
+            const tl = gsap.timeline();
+            
+            // Body scroll lock during load
+            document.body.classList.add('no-scroll');
+
+            tl.to(".loader-logo", { opacity: 1, duration: 1.5, ease: "power2.inOut" })
+              .to(".loader-logo", { opacity: 0, duration: 1, ease: "power2.inOut", delay: 0.5 })
+              .to("#loader", { yPercent: -100, duration: 1, ease: "power4.inOut" })
+              .call(() => document.body.classList.remove('no-scroll'))
+              // Header & UI elements appear
+              .to(".header-logo, #menu-btn, #scroll-indicator", { opacity: 1, duration: 1, stagger: 0.2, ease: "power2.out" }, "-=0.5")
+              // Hero background zoom in
+              .to("#hero-bg", { scale: 1, duration: 2, ease: "power3.out" }, "-=1.5");
+
+            // Hero Title Split text animation (One by one)
+            const titleEl = document.getElementById('hero-title');
+            const titleText = titleEl.innerText;
+            titleEl.innerHTML = '';
+            titleEl.style.opacity = 1; // Unhide container
+            
+            titleText.split('').forEach(char => {
+                // Ignore spaces for the animation
+                if(char === ' ') {
+                    titleEl.appendChild(document.createTextNode(' '));
+                    return;
+                }
+                const span = document.createElement('span');
+                span.innerText = char;
+                span.style.display = 'inline-block';
+                span.style.opacity = '0';
+                span.style.transform = 'translateY(20px)';
+                titleEl.appendChild(span);
+            });
+
+            tl.to("#hero-title span", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power3.out"
+            }, "-=1.5");
+
+            /* =================================================================
+               2. Hamburger Menu Logic
+               ================================================================= */
+            const menuBtn = document.getElementById('menu-btn');
+            const navOverlay = document.getElementById('nav-overlay');
+            let isMenuOpen = false;
+
+            menuBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                menuBtn.classList.toggle('active');
+                navOverlay.classList.toggle('active');
+                
+                if(isMenuOpen) {
+                    document.body.classList.add('no-scroll');
+                } else {
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+
+            /* =================================================================
+               3. Scroll Interaction (Header BG & Fixed Reserve Button)
+               ================================================================= */
+            const header = document.getElementById('header');
+            const reserveBtn = document.getElementById('fixed-reserve-btn');
+
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                // Header blur effect
+                if (scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+
+                // Show fixed reserve button after passing hero section
+                if (scrollY > window.innerHeight * 0.5) {
+                    reserveBtn.classList.add('visible');
+                } else {
+                    reserveBtn.classList.remove('visible');
+                }
+            });
+
+            /* =================================================================
+               4. ScrollTrigger Animations (Reveal & Parallax)
+               ================================================================= */
+            
+            // Hero Image Parallax
+            gsap.to("#hero-bg", {
+                yPercent: 20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Reveal Up Elements
+            gsap.utils.toArray('.reveal-up').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+
+            // Reveal Fade Elements
+            gsap.utils.toArray('.reveal-fade').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    duration: 1.5,
+                    ease: "power2.out"
+                });
+            });
+
+            // Parallax Images in Galleries
+            gsap.utils.toArray('.parallax-img').forEach(img => {
+                gsap.fromTo(img, 
+                    { yPercent: -10 },
+                    {
+                        yPercent: 10,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: img.parentElement,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    }
+                );
+            });
+        });
+    </script>
+</body>
+</html>
