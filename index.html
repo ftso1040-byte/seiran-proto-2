@@ -125,14 +125,25 @@
             background-size: cover;
             position: relative;
         }
+        
+        /* 背景画像を活かすため、透過レイヤーを薄い黒に変更 */
         .parallax::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(255, 255, 255, 0.85); /* 明るい透過レイヤー */
+            background-color: rgba(0, 0, 0, 0.15); 
         }
         .parallax_contact_info {
             background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop');
         }
-        .parallax_contents { position: relative; z-index: 1; padding: 100px 0; text-align: center; }
+        .parallax_contents { position: relative; z-index: 1; padding: 120px 0; text-align: center; }
+        
+        /* 白い中間背景（ボックス）の追加 */
+        .parallax_contact_info_inner {
+            background-color: rgba(255, 255, 255, 0.95);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
         
         h2 { font-size: 2rem; letter-spacing: 0.1em; margin-bottom: 20px; }
         h2 span { display: block; font-size: 1rem; color: #666; margin-top: 10px; font-family: 'Noto Sans JP', sans-serif; }
@@ -169,7 +180,16 @@
             background-image: url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2000&auto=format&fit=crop');
             color: #fff;
         }
-        .parallax_contact_info_02::before { background-color: rgba(0, 0, 0, 0.75); /* こちらは暗く */ }
+        .parallax_contact_info_02::before { background-color: rgba(0, 0, 0, 0.6); /* 少し明るくして背景を魅せる */ }
+        
+        /* お問い合わせ部分は黒い中間背景（ボックス）に設定 */
+        .parallax_contact_info_02_inner .container {
+            background-color: rgba(0, 0, 0, 0.75);
+            padding: 80px 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         .parallax_contact_info_02 h2 { color: #fff; }
         .parallax_contact_info_02 h2 span { color: #ccc; }
         .tel-number { font-size: 2.5rem; font-family: 'Shippori Mincho', serif; display: block; margin: 20px 0; }
@@ -217,7 +237,7 @@
       <ul class="main_visual_slick mb0">
         <li>
           <!-- ▼ 画像差し替え箇所：ヒーロー画像 -->
-          <img src="Gemini_Generated_Image_e2meq6e2meq6e2me.png" alt="銀座 聖藍" />
+          <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=2000&auto=format&fit=crop" alt="銀座 聖藍" />
         </li>
       </ul>
       <div class="main_visual_copy">
@@ -230,6 +250,7 @@
     <section class="contact_info mb0">
       <div class="parallax parallax_contact_info">
         <div class="parallax_contents">
+          <!-- 追加した白い中間背景のラッパー -->
           <div class="parallax_contact_info_inner">
             <div class="container gutters">
               <div class="row">
@@ -254,7 +275,7 @@
           <div class="col span_6">
             <figure>
               <!-- ▼ 画像差し替え箇所：こだわり画像 -->
-              <img src="Gemini_Generated_Image_a59yt7a59yt7a59y.png" alt="こだわり" />
+              <img src="https://images.unsplash.com/photo-1563131763-7eb9273907eb?q=80&w=1000&auto=format&fit=crop" alt="こだわり" />
             </figure>
           </div>
           <div class="col span_6">
@@ -275,7 +296,7 @@
           <div class="col span_6">
             <figure>
               <!-- ▼ 画像差し替え箇所：お品書き画像 -->
-              <img src="Gemini_Generated_Image_y30u3fy30u3fy30u.png" alt="お品書き" />
+              <img src="https://images.unsplash.com/photo-1611143669185-af224c5e3252?q=80&w=1000&auto=format&fit=crop" alt="お品書き" />
             </figure>
           </div>
           <div class="col span_6">
