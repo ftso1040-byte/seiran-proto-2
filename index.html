@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>お品書き | 銀座 聖藍｜東京都中央区銀座にある寿司店</title>
-    <meta name="description" content="銀座 聖藍のお品書きのご案内です。その日の最高の仕入れで決まる月替わりのおまかせコースをご用意しております。四季の彩りを映し出す旬の魚介と極上の握りをお楽しみください。">
-    <meta name="keywords" content="東京都,中央区,銀座,寿司,鮨,お昼,夜,おまかせコース,メニュー">
+    <title>銀座 聖藍｜東京都中央区銀座にある寿司店</title>
+    <meta name="description" content="東京都中央区銀座にある寿司店「銀座 聖藍」です。選び抜いたこだわりの食材と、磨き抜かれた職人技で、極上のひとときをお過ごしください。">
+    <meta name="keywords" content="東京都,中央区,銀座,寿司,鮨,お昼,夜,銀座 聖藍">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,19 +22,22 @@
            1. CSS Variables & Reset (The "Seiran" Blue)
            ========================================================================== */
         :root {
-            --color-bg: #030508;
-            --color-surface: #06090e;
+            --color-bg: #030508; /* 極限まで黒に近い深い藍色 */
+            --color-surface: #06090e; /* 少し明るい藍色（カード等） */
             --color-text: #F5F5F0;
             --color-text-muted: #888888;
-            --color-accent: #C1A063;
+            --color-accent: #C1A063; /* 藍に映える金 */
             --color-border: rgba(255, 255, 255, 0.15);
             
+            /* Fluid Typography */
             --font-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.85rem);
             --font-sm: clamp(0.875rem, 0.8vw + 0.5rem, 1rem);
             --font-base: clamp(1rem, 1vw + 0.5rem, 1.125rem);
             --font-lg: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
             --font-xl: clamp(2rem, 3vw + 1rem, 3rem);
+            --font-xxl: clamp(3rem, 6vw + 1rem, 5rem);
             
+            /* Fluid Spacing */
             --space-xs: clamp(1rem, 2vw, 1.5rem);
             --space-sm: clamp(2rem, 4vw, 3rem);
             --space-md: clamp(4rem, 8vw, 6rem);
@@ -72,194 +75,177 @@
         /* Layout Utils */
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-sm); }
         .container-narrow { max-width: 900px; }
-        .section-padding { padding: var(--space-md) 0; }
+        .section-padding { padding: var(--space-lg) 0; }
         .text-center { text-align: center; }
-        .mgt20 { margin-top: 20px; }
-        .mgt40 { margin-top: 40px; }
 
         /* ==========================================================================
            2. Elegant Button
            ========================================================================== */
         .elegant-btn {
-            position: relative; display: inline-flex; align-items: center; justify-content: center;
-            padding: 15px 40px; border: 1px solid var(--color-border); color: var(--color-text);
-            font-family: var(--font-serif); font-size: var(--font-sm); letter-spacing: 0.15em;
-            overflow: hidden; transition: color 0.4s ease, border-color 0.4s ease; background: transparent; cursor: pointer;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 40px;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            font-family: var(--font-serif);
+            font-size: var(--font-sm);
+            letter-spacing: 0.15em;
+            overflow: hidden;
+            transition: color 0.4s ease, border-color 0.4s ease;
+            background: transparent;
+            cursor: pointer;
         }
         .elegant-btn::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--color-accent); transform: scaleX(0); transform-origin: right;
-            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index: -1;
+            background-color: var(--color-accent);
+            transform: scaleX(0); transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: -1;
         }
         .elegant-btn:hover { border-color: var(--color-accent); color: var(--color-bg); }
         .elegant-btn:hover::before { transform: scaleX(1); transform-origin: left; }
 
         /* ==========================================================================
-           3. Header & Navigation
+           3. Header & Hamburger Navigation
            ========================================================================== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
             display: flex; justify-content: space-between; align-items: center;
             padding: 0 var(--space-sm); z-index: 1000;
-            background-color: rgba(3, 5, 8, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border);
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+        }
+        header.scrolled {
+            background-color: rgba(3, 5, 8, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
         }
         .header-logo { font-family: var(--font-serif); font-size: var(--font-lg); letter-spacing: 0.15em; }
 
-        .menu-btn { position: relative; width: 40px; height: 40px; cursor: pointer; z-index: 1001; background: none; border: none; }
-        .menu-btn-line { position: absolute; left: 5px; width: 30px; height: 1px; background-color: var(--color-text); transition: transform 0.4s ease, opacity 0.4s ease; }
-        .menu-btn-line:nth-child(1) { top: 12px; } .menu-btn-line:nth-child(2) { top: 20px; } .menu-btn-line:nth-child(3) { top: 28px; }
+        .menu-btn {
+            position: relative; width: 40px; height: 40px; cursor: pointer; z-index: 1001; background: none; border: none;
+        }
+        .menu-btn-line {
+            position: absolute; left: 5px; width: 30px; height: 1px; background-color: var(--color-text);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .menu-btn-line:nth-child(1) { top: 12px; }
+        .menu-btn-line:nth-child(2) { top: 20px; }
+        .menu-btn-line:nth-child(3) { top: 28px; }
         .menu-btn.active .menu-btn-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .menu-btn.active .menu-btn-line:nth-child(2) { opacity: 0; }
         .menu-btn.active .menu-btn-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
         .nav-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: rgba(3, 5, 8, 0.98); z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: rgba(3, 5, 8, 0.98); z-index: 999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             visibility: hidden; opacity: 0; transition: visibility 0s 0.5s, opacity 0.5s ease;
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
-        
-        /* 圧倒的に美しい 3x2 のグリッドレイアウトへ改修 */
-        .nav-list { 
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space-md) var(--space-sm);
-            width: 100%;
-            max-width: 900px;
-            padding: 0 var(--space-sm);
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .nav-list {
-                /* スマホ時は縦の隙間を少し絞り、1画面に綺麗に収める */
-                gap: var(--space-sm) var(--space-xs);
-            }
-        }
-
-        .nav-item { overflow: hidden; }
+        .nav-list { text-align: center; }
+        .nav-item { margin: var(--space-xs) 0; overflow: hidden; }
         .nav-link {
-            display: block; font-family: var(--font-serif); 
-            /* 見切れ防止とインパクトの両立。PCは大きく、スマホは画面幅に合わせて縮小 */
-            font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
+            display: block; font-family: var(--font-serif); font-size: var(--font-xl);
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap; /* テキストの折り返しを防ぎ、美しさを担保 */
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
         /* ==========================================================================
-           4. Page Header & Breadcrumb
+           4. Hero Section
            ========================================================================== */
-        .page-header { margin-top: var(--header-height); padding: var(--space-md) 0 var(--space-sm); text-align: center; }
-        .page-title { font-size: var(--font-xl); letter-spacing: 0.2em; margin-bottom: var(--space-xs); }
-        .breadcrumb { display: flex; justify-content: center; font-size: var(--font-xs); color: var(--color-text-muted); letter-spacing: 0.1em; }
-        .breadcrumb li { display: flex; align-items: center; }
-        .breadcrumb li:not(:last-child)::after { content: '>'; margin: 0 10px; color: var(--color-border); }
+        .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .hero-bg-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        .hero-bg { width: 100%; height: 100%; transform: scale(1.1); }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(3,5,8,0.3) 0%, rgba(3,5,8,0.8) 100%); z-index: -1;
+        }
+        .hero-title { font-size: var(--font-xxl); font-weight: 400; letter-spacing: 0.2em; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .hero-subtitle { font-size: var(--font-base); letter-spacing: 0.3em; margin-top: 1rem; color: var(--color-accent); text-align: center; }
 
         /* ==========================================================================
-           5. Menu Styles
+           5. Section Titles & Split Layouts (店舗案内 / こだわり)
            ========================================================================== */
-        .menu-intro-text {
-            font-size: var(--font-lg);
-            line-height: 2.2;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto var(--space-md);
-        }
+        .section-header { text-align: center; margin-bottom: var(--space-md); }
+        .section-title-en { font-family: var(--font-sans); font-size: var(--font-xs); color: var(--color-accent); letter-spacing: 0.3em; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
+        .section-title-ja { font-size: var(--font-xl); letter-spacing: 0.15em; }
 
-        .menu-img-wrap {
-            width: 100%;
-            height: 40vh;
-            overflow: hidden;
-            margin-bottom: var(--space-md);
-            position: relative;
-        }
+        .split-layout { display: grid; grid-template-columns: 1fr; gap: var(--space-md); align-items: center; }
         @media (min-width: 768px) {
-            .menu-img-wrap { height: 50vh; }
-        }
-        .menu-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.9;
-        }
-
-        .menu-list-section {
-            background-color: var(--color-surface);
-            padding: var(--space-lg) 0;
-            border-top: 1px solid var(--color-border);
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .menu-item {
-            margin-bottom: var(--space-md);
-            padding-bottom: var(--space-md);
-            border-bottom: 1px dashed var(--color-border);
-        }
-        .menu-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .menu-item-title {
-            font-size: var(--font-xl);
-            color: var(--color-accent);
-            text-align: center;
-            margin-bottom: var(--space-xs);
-            letter-spacing: 0.15em;
+            .split-layout { grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
+            .split-layout.reverse { direction: rtl; }
+            .split-layout.reverse > * { direction: ltr; }
         }
         
-        .menu-item-price {
-            font-size: var(--font-lg);
-            text-align: center;
-            margin-bottom: var(--space-sm);
-        }
-
-        .menu-item-desc {
-            font-size: var(--font-base);
-            text-align: center;
-            color: var(--color-text-muted);
-            line-height: 2;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* 飲み物リスト用 */
-        .drink-list {
-            max-width: 600px;
-            margin: var(--space-sm) auto 0;
-        }
-        .drink-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .drink-name { font-size: var(--font-base); }
-        .drink-price { font-size: var(--font-base); color: var(--color-text-muted); }
+        .split-text-box { padding: var(--space-xs) 0; }
+        .split-title { font-size: var(--font-lg); margin-bottom: var(--space-xs); letter-spacing: 0.15em; }
+        .split-desc { font-size: var(--font-base); color: var(--color-text-muted); line-height: 2.2; }
+        
+        .split-img-wrap { width: 100%; height: 50vh; overflow: hidden; position: relative; transform: translateZ(0); }
+        .split-img { position: absolute; top: -10%; left: 0; width: 100%; height: 120%; }
 
         /* ==========================================================================
-           6. Contact Parallax (共通)
+           6. Menu Overview (お品書き)
            ========================================================================== */
-        .contact_info_02 { position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop'); }
-        .contact_info_02::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.85); }
-        .contact_info_02_inner { position: relative; z-index: 1; padding: var(--space-lg) 0; text-align: center; }
-        .contact-title { font-size: var(--font-xl); margin-bottom: 10px; }
-        .contact-subtitle { font-size: var(--font-sm); color: var(--color-text-muted); font-family: var(--font-sans); letter-spacing: 0.2em; }
-        .tel-number { font-size: 2.5rem; color: var(--color-accent); display: block; margin: var(--space-xs) 0; }
+        .menu-section { background-color: var(--color-surface); text-align: center; }
+        .menu-text { max-width: 800px; margin: 0 auto var(--space-md); font-size: var(--font-lg); line-height: 2.2; position: relative; z-index: 10; }
+        
+        .photo-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 768px) { .photo-grid { grid-template-columns: 1fr 1fr; } }
+        .photo-wrap { width: 100%; height: 40vh; overflow: hidden; position: relative; transform: translateZ(0); }
+        .photo-img { position: absolute; top: -10%; left: 0; width: 100%; height: 120%; }
 
         /* ==========================================================================
-           7. Footer (共通)
+           7. 3 Column Cards (ギャラリー/予約の流れ/FAQ)
            ========================================================================== */
-        footer { padding: var(--space-md) 0; text-align: center; font-size: var(--font-xs); color: var(--color-text-muted); border-top: 1px solid var(--color-border); }
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-sm); }
+        @media (min-width: 768px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+        
+        .card { background-color: var(--color-surface); padding-bottom: var(--space-sm); transition: transform 0.4s ease; border: 1px solid transparent; }
+        .card:hover { transform: translateY(-10px); border-color: var(--color-border); }
+        .card-img-wrap { width: 100%; height: 250px; overflow: hidden; margin-bottom: var(--space-xs); }
+        .card-img { width: 100%; height: 100%; transition: transform 0.6s ease; }
+        .card:hover .card-img { transform: scale(1.05); }
+        .card-title { font-size: var(--font-lg); text-align: center; margin-bottom: 10px; color: var(--color-accent); }
+        .card-text { font-size: var(--font-sm); color: var(--color-text-muted); padding: 0 var(--space-xs); margin-bottom: var(--space-xs); text-align: center; }
+
+        /* ==========================================================================
+           8. News (お知らせ) & Info (店舗情報)
+           ========================================================================== */
+        .news-section { background-color: var(--color-bg); }
+        .news-list { border-top: 1px solid var(--color-border); max-width: 800px; margin: 0 auto; }
+        .news-item { display: flex; flex-direction: column; padding: 20px 0; border-bottom: 1px solid var(--color-border); transition: background-color 0.3s; }
+        @media (min-width: 768px) { .news-item { flex-direction: row; align-items: center; } }
+        .news-item:hover { background-color: rgba(255,255,255,0.02); }
+        .news-date { width: 150px; color: var(--color-accent); font-family: var(--font-serif); }
+        .news-title { flex: 1; }
+
+        .info-section { background-color: var(--color-surface); }
+        .info-table { width: 100%; border-collapse: collapse; margin-top: var(--space-md); }
+        .info-table th, .info-table td { padding: 15px 0; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
+        .info-table th { width: 30%; font-family: var(--font-serif); color: var(--color-accent); font-weight: 400; }
+        @media (max-width: 768px) {
+            .info-table th, .info-table td { display: block; width: 100%; }
+            .info-table th { border-bottom: none; padding-bottom: 0; }
+        }
+
+        /* ==========================================================================
+           9. Map & Footer
+           ========================================================================== */
+        .map-wrap { width: 100%; height: 50vh; background-color: #000; }
+        .map-footer-area { background-color: var(--color-bg); padding: var(--space-sm) 0; text-align: center; border-bottom: 1px solid var(--color-border); }
+        
+        footer { padding: var(--space-md) 0; text-align: center; font-size: var(--font-xs); color: var(--color-text-muted); }
         .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
         .copyright { margin-top: 20px; letter-spacing: 0.1em; }
 
         /* Animation Utilities */
         .reveal-up { opacity: 0; transform: translateY(40px); }
         .reveal-fade { opacity: 0; }
+
     </style>
 </head>
 <body>
@@ -275,8 +261,8 @@
   </header>
 
   <nav class="nav-overlay" id="nav-overlay">
-      <!-- HOMEを外し、完璧な3x2グリッドを実現しました -->
       <ul class="nav-list">
+          <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
           <li class="nav-item"><a href="menu.html" class="nav-link">お品書き</a></li>
@@ -285,102 +271,205 @@
           <li class="nav-item"><a href="faq.html" class="nav-link">よくあるご質問</a></li>
       </ul>
   </nav>
+      </ul>
+  </nav>
 
   <main>
-      <!-- Page Header & Breadcrumb -->
-      <div class="page-header reveal-fade">
-          <h1 class="page-title text-serif">お品書き</h1>
-          <ul class="breadcrumb">
-              <li><a href="index.html">HOME</a></li>
-              <li>お品書き</li>
-          </ul>
-      </div>
+      <!-- Hero Section -->
+      <section class="hero">
+          <div class="hero-bg-wrap">
+              <!-- ▼ 画像差し替え箇所 1：トップのヒーロー画像 -->
+              <img src="スクリーンショット 2026-03-17 200221.png" class="hero-bg" id="hero-bg" alt="[Image of 寿司]">
+          </div>
+          <div class="hero-overlay"></div>
+          <div style="text-align: center;">
+              <h1 class="hero-title text-serif reveal-fade" id="hero-title">銀座 聖藍</h1>
+              <p class="hero-subtitle text-serif reveal-fade">完全予約制<br> 銀座の静謐空間で堪能する至福の鮨</p>
+          </div>
+      </section>
 
-      <!-- Menu Intro -->
-      <section class="section-padding">
-          <div class="container container-narrow">
-              <p class="menu-intro-text text-serif reveal-up">
-                  お品書きは、その日の最高の仕入れで決まる<br class="pc-only">
-                  月替わりのおまかせコースをご用意しております。<br>
-                  お昼、夜ともに四季の彩りを映し出す旬の魚介と、<br class="pc-only">
-                  こだわりのシャリを用いた江戸前寿司をお楽しみください。
+      <!-- 店舗案内 (About) -->
+      <section id="about" class="section-padding">
+          <div class="container">
+              <div class="section-header reveal-up">
+                  <span class="section-title-en">About Us</span>
+                  <h2 class="section-title-ja text-serif">店舗案内</h2>
+              </div>
+              <div class="split-layout">
+                  <div class="split-text-box reveal-up">
+                      <h3 class="split-title text-serif">完全予約制<br>磨き抜かれた匠の技で<br>極上のひとときを</h3>
+                      <p class="split-desc text-serif">
+                          銀座 聖藍は、東京都中央区銀座にある寿司店です。<br>
+                          こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br>
+                          お席は白木が香るカウンター席のほか、<br>ご接待にも最適な個室をご用意しております。
+                      </p>
+                      <div class="mgt40">
+                          <a href="about.html" class="elegant-btn">詳しくはこちら</a>
+                      </div>
+                  </div>
+                  <div class="split-img-wrap reveal-fade">
+                      <!-- ▼ 画像差し替え箇所 2：店舗案内の画像（例：店内の雰囲気、大将の姿など） -->
+                      <img src="スクリーンショット 2026-03-17 205753.png" class="split-img parallax-img" alt="">
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- こだわり (Concept) -->
+      <section id="concept" class="section-padding" style="background-color: var(--color-surface);">
+          <div class="container">
+              <div class="section-header reveal-up">
+                  <span class="section-title-en">Concept</span>
+                  <h2 class="section-title-ja text-serif">こだわり</h2>
+              </div>
+              <!-- リバースレイアウト（PCでは画像が左、テキストが右） -->
+              <div class="split-layout reverse">
+                  <div class="split-text-box reveal-up">
+                      <h3 class="split-title text-serif">厳選して提供しています。</h3>
+                      <p class="split-desc text-serif">
+                          にぎりやおつまみで使う食材は、<br>
+                          毎朝職人が自ら市場に行って良いものを選び仕入れています。<br>
+                          四季の移ろいを感じる旬の魚介を取り入れているのも、<br>当店の絶対的なこだわりです。
+                      </p>
+                      <div class="mgt40">
+                          <a href="concept.html" class="elegant-btn">詳しくはこちら</a>
+                      </div>
+                  </div>
+                  <div class="split-img-wrap reveal-fade">
+                      <!-- ▼ 画像差し替え箇所 3：こだわりの画像（例：新鮮な魚介、職人の手元など） -->
+                      <img src="スクリーンショット 2026-03-17 200707.png" class="split-img parallax-img" alt="">
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- お品書き (Menu) -->
+      <section id="menu" class="menu-section section-padding">
+          <div class="container">
+              <div class="section-header reveal-up">
+                  <span class="section-title-en">Menu</span>
+                  <h2 class="section-title-ja text-serif">お品書き</h2>
+              </div>
+              <p class="menu-text text-serif reveal-up">
+                  お昼のコースと夜のコースをご用意しています。<br>
+                  内容はおまかせになり、その日の仕入れで決まります。<br>
+                  お料理に寄り添うお飲み物も各種揃えておりますので、<br>お気軽にお尋ねください。
               </p>
               
-              <figure class="menu-img-wrap reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 1：お品書きトップのイメージ画像（例：寿司の盛り合わせや握りのアップ） -->
-                  <img src="" alt="おまかせコース" class="menu-img" />
-              </figure>
+              <div class="photo-grid mgt40">
+                  <div class="photo-wrap reveal-fade">
+                      <!-- ▼ 画像差し替え箇所 4：お品書き画像 左（例：美しい握り寿司） -->
+                      <img src="スクリーンショット 2026-03-17 205250.png" class="photo-img parallax-img" alt="">
+                  </div>
+                  <div class="photo-wrap reveal-fade">
+                      <!-- ▼ 画像差し替え箇所 5：お品書き画像 右（例：日本酒や逸品料理） -->
+                      <img src="スクリーンショット 2026-03-17 200757.png" class="photo-img parallax-img" alt="">
+                  </div>
+              </div>
+
+              <div class="mgt40 reveal-up">
+                  <a href="menu.html" class="elegant-btn">詳しくはこちら</a>
+              </div>
           </div>
       </section>
 
-      <!-- Menu List -->
-      <section class="menu-list-section">
+      <!-- ギャラリー / 予約の流れ / FAQ (3 Columns) -->
+      <section class="section-padding">
+          <div class="container">
+              <div class="cards-grid">
+                  <!-- ギャラリー -->
+                  <div class="card reveal-up">
+                      <div class="card-img-wrap">
+                          <!-- ▼ 画像差し替え箇所 6：ギャラリーカードの画像 -->
+                          <img src="スクリーンショット 2026-03-17 205250.png" alt="">
+                      </div>
+                      <h3 class="card-title text-serif">ギャラリー</h3>
+                      <p class="card-text text-serif">店内の様子やお料理のイメージをご用意しました。是非ご覧ください。</p>
+                      <div class="text-center mgt20"><a href="gallery.html" class="elegant-btn" style="padding: 10px 20px; font-size: 0.8rem;">詳しくはこちら</a></div>
+                  </div>
+                  <!-- ご予約の流れ -->
+                  <div class="card reveal-up" style="transition-delay: 0.1s;">
+                      <div class="card-img-wrap">
+                          <!-- ▼ 画像差し替え箇所 7：ご予約の流れカードの画像 -->
+                          <img src="Gemini_Generated_Image_e2meq6e2meq6e2me.png" class="card-img" alt="">
+                      </div>
+                      <h3 class="card-title text-serif">ご予約の流れ</h3>
+                      <p class="card-text text-serif">初めてご利用の方へ向けた、ご予約の流れをご案内いたします。</p>
+                      <div class="text-center mgt20"><a href="flow.html" class="elegant-btn" style="padding: 10px 20px; font-size: 0.8rem;">詳しくはこちら</a></div>
+                  </div>
+                  <!-- よくあるご質問 -->
+                  <div class="card reveal-up" style="transition-delay: 0.2s;">
+                      <div class="card-img-wrap">
+                          <!-- ▼ 画像差し替え箇所 8：よくあるご質問カードの画像 -->
+                          <img src="スクリーンショット 2026-03-17 200646.png" class="card-img" alt="[Image of FAQ]">
+                      </div>
+                      <h3 class="card-title text-serif">よくあるご質問</h3>
+                      <p class="card-text text-serif">よくいただくご質問やご相談内容をまとめました。ご確認ください。</p>
+                      <div class="text-center mgt20"><a href="faq.html" class="elegant-btn" style="padding: 10px 20px; font-size: 0.8rem;">詳しくはこちら</a></div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <!-- お知らせ -->
+      <section class="news-section section-padding">
           <div class="container container-narrow">
-              
-              <!-- お飲み物 -->
-              <div class="menu-item reveal-up">
-                  <figure class="menu-img-wrap" style="height: 30vh; margin-top: var(--space-md);">
-                      <!-- ▼ 画像差し替え箇所 2：お飲み物のイメージ画像（例：日本酒とお猪口など） -->
-                      <img src="" alt="お飲み物" class="menu-img" />
-                  </figure>
-                  <h2 class="menu-item-title text-serif">お飲み物</h2>
-                  <p class="menu-item-desc text-serif" style="margin-bottom: var(--space-sm);">
-                      お寿司の繊細な味わいを引き立てる、全国各地の銘酒（日本酒・焼酎）を厳選してご用意しております。<br>
-                      メニューにない隠し酒もございますので、料理長にお声がけください。
-                  </p>
-                  
-                  <ul class="drink-list text-serif">
-                      <li class="drink-item">
-                          <span class="drink-name">日本酒 (一合)</span>
-                          <span class="drink-price">1,800円〜</span>
-                      </li>
-                      <li class="drink-item">
-                          <span class="drink-name">本格焼酎 (芋・麦)</span>
-                          <span class="drink-price">1,200円〜</span>
-                      </li>
-                      <li class="drink-item">
-                          <span class="drink-name">生ビール</span>
-                          <span class="drink-price">1,000円</span>
-                      </li>
-                      <li class="drink-item">
-                          <span class="drink-name">ノンアルコールドリンク各種</span>
-                          <span class="drink-price">800円〜</span>
-                      </li>
-                  </ul>
+              <div class="section-header reveal-up">
+                  <span class="section-title-en">News</span>
+                  <h2 class="section-title-ja text-serif">お知らせ</h2>
               </div>
-
+              <div class="news-list reveal-up">
+                  <a href="news.html" class="news-item">
+                      <div class="news-date">2023.10.01</div>
+                      <div class="news-title">銀座 聖藍のホームページを新しくオープンしました。</div>
+                  </a>
+                  <!-- 記事が増えた場合はここに追加 -->
+              </div>
+              <div class="text-center mgt40 reveal-up">
+                  <a href="news.html" class="elegant-btn">一覧を見る</a>
+              </div>
           </div>
       </section>
 
-      <!-- Contact Info Parallax -->
-      <section class="contact_info_02">
-          <div class="contact_info_02_inner reveal-fade">
-              <div class="container container-narrow">
-                  <h2 class="contact-title text-serif">お問い合わせ</h2>
-                  <span class="contact-subtitle">銀座 聖藍</span>
-                  
-                  <p class="text-serif mgt40" style="line-height: 2.2;">
-                      銀座 聖藍は、東京都中央区銀座にある完全予約制の寿司店です。<br class="pc-only">
-                      こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br class="pc-only">
-                      お席はカウンター席・完全個室をご用意しております。<br class="pc-only">
-                      当店へのご予約・お問い合わせはお電話にて承っております。
-                  </p>
-                  
-                  <div class="mgt40">
-                      <span class="text-serif" style="font-size: 0.9rem; color: var(--color-text-muted);">TEL</span>
-                      <a href="tel:03-3572-6555" class="tel-number text-serif">03-3572-6555</a>
-                  </div>
-                  
-                  <div class="mgt40">
-                      <a href="#" class="elegant-btn" style="background-color: var(--color-accent); color: #000;">Webからのご予約はこちら</a>
-                  </div>
-                  
-                  <p class="text-serif mgt40" style="font-size: 0.9rem; color: var(--color-text-muted);">
-                      東京都中央区銀座6-9-14 方圓ビル 2F<br>
-                      11:30～14:00 / 17:00～22:00<br>
-                      [定休日]<br>水曜日・日曜日<br>
-                  </p>
+      <!-- 店舗情報・お問い合わせ -->
+      <section id="info" class="info-section section-padding">
+          <div class="container container-narrow">
+              <div class="section-header reveal-up">
+                  <span class="section-title-en">Information</span>
+                  <h2 class="section-title-ja text-serif">店舗情報</h2>
               </div>
+              <div class="text-center reveal-up">
+                  <p class="text-serif" style="font-size: 1.5rem; letter-spacing: 0.15em; margin-bottom: 10px;">ご予約・お問い合わせ</p>
+                  <p class="text-serif text-accent" style="font-size: 2.5rem; margin-bottom: 20px;"><a href="tel:03-3572-6555">03-3572-6555</a></p>
+                  <a href="#" class="elegant-btn" style="background-color: var(--color-accent); color: #000;">Webからのご予約はこちら</a>
+              </div>
+
+              <table class="info-table reveal-up mgt40">
+                  <tbody>
+                      <tr><th>店舗名</th><td>銀座 聖藍（ぎんざ せいらん）</td></tr>
+                      <tr><th>所在地</th><td>〒104-0061 東京都中央区銀座6-9-14 方圓ビル2階</td></tr>
+                      <tr><th>営業時間</th><td>11:30～22:30</td></tr>
+                      <tr><th>定休日</th><td>水曜日、日曜日</td></tr>
+                      <tr><th>席数</th><td>カウンター席・個室</td></tr>
+                      <tr><th>クレジットカード</th><td>MasterCard・JCB・VISA・AmericanExpress・Diners</td></tr>
+                  </tbody>
+              </table>
+          </div>
+      </section>
+
+      <!-- Map & Route Button -->
+      <section class="map-section">
+          <div class="map-wrap reveal-fade">
+              <iframe 
+                  src="https://maps.google.com/maps?q=東京都中央区銀座6-9-14&t=m&z=16&output=embed&iwloc=Near" 
+                  width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0">
+              </iframe>
+          </div>
+          <div class="map-footer-area reveal-up">
+              <p class="text-serif" style="margin-bottom: 15px; font-size: 0.9rem;">東京メトロ銀座線・丸ノ内線・日比谷線「銀座駅」より徒歩約3分</p>
+              <a href="https://www.google.com/maps/dir/?api=1&origin=銀座駅&destination=東京都中央区銀座6-9-14" target="_blank" rel="noopener noreferrer" class="elegant-btn" style="padding: 10px 30px; font-size: 0.8rem;">
+                  銀座駅からの経路を見る (Google Maps)
+              </a>
           </div>
       </section>
 
@@ -410,7 +499,23 @@
           gsap.registerPlugin(ScrollTrigger);
 
           /* =================================================================
-             1. Hamburger Menu Logic
+             1. Initial Animation & Header
+             ================================================================= */
+          gsap.to("#hero-title, .hero-subtitle", {
+              opacity: 1, y: 0, duration: 1.5, stagger: 0.3, ease: "power3.out", delay: 0.5
+          });
+
+          const header = document.getElementById('header');
+          window.addEventListener('scroll', () => {
+              if (window.scrollY > 50) {
+                  header.classList.add('scrolled');
+              } else {
+                  header.classList.remove('scrolled');
+              }
+          });
+
+          /* =================================================================
+             2. Hamburger Menu Logic
              ================================================================= */
           const menuBtn = document.getElementById('menu-btn');
           const navOverlay = document.getElementById('nav-overlay');
@@ -428,11 +533,14 @@
           navLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
           /* =================================================================
-             2. ScrollTrigger Animations
+             3. ScrollTrigger Animations
              ================================================================= */
           
-          // Initial Load Reveal
-          gsap.to(".page-header", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 0.2 });
+          // Hero Image Parallax
+          gsap.to("#hero-bg", {
+              yPercent: 15, ease: "none",
+              scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+          });
 
           // Reveal Up Elements
           gsap.utils.toArray('.reveal-up').forEach(el => {
@@ -448,6 +556,17 @@
                   scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
                   opacity: 1, duration: 1.5, ease: "power2.out"
               });
+          });
+
+          // Parallax Images in Wrap
+          gsap.utils.toArray('.parallax-img').forEach(img => {
+              gsap.fromTo(img, 
+                  { yPercent: -5 },
+                  {
+                      yPercent: 5, ease: "none",
+                      scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true }
+                  }
+              );
           });
       });
   </script>
