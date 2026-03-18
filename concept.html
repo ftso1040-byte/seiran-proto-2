@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>こだわり | 銀座 聖藍｜東京都中央区銀座にある寿司店</title>
-    <meta name="description" content="東京都中央区銀座の寿司店「銀座 聖藍」のこだわり。厳選した食材と、料理長・林家克三郎の磨き抜かれた匠の技をご堪能ください。">
-    <meta name="keywords" content="東京都,中央区,銀座,寿司,鮨,こだわり,銀座 聖藍,林家克三郎">
+    <meta name="description" content="東京都中央区銀座の寿司店「銀座 聖藍」のこだわり。厳選した食材と、洗練された空間で至福のひとときをご堪能ください。">
+    <meta name="keywords" content="東京都,中央区,銀座,寿司,鮨,こだわり,銀座 聖藍">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +19,7 @@
 
     <style>
         /* ==========================================================================
-           1. CSS Variables & Reset (The "Seiran" Blue)
+           1. CSS Variables & Reset
            ========================================================================== */
         :root {
             --color-bg: #030508;
@@ -54,12 +54,19 @@
             color: var(--color-text);
             font-family: var(--font-sans);
             font-size: var(--font-base);
-            line-height: 2;
-            letter-spacing: 0.1em;
+            line-height: 2.8; /* 縦書きのような情緒を感じさせる広めの行間 */
+            letter-spacing: 0.14em; /* 高級感のための余裕 */
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
         body.no-scroll { overflow: hidden; }
+
+        /* 「文字の泣き」を根絶する絶対防御のクラス */
+        .text-unit {
+            display: inline-block;
+            white-space: nowrap;
+            vertical-align: top;
+        }
 
         a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--color-accent); }
@@ -74,28 +81,10 @@
         .container-narrow { max-width: 900px; }
         .section-padding { padding: var(--space-md) 0; }
         .text-center { text-align: center; }
-        .mgt20 { margin-top: 20px; }
         .mgt40 { margin-top: 40px; }
 
         /* ==========================================================================
-           2. Elegant Button
-           ========================================================================== */
-        .elegant-btn {
-            position: relative; display: inline-flex; align-items: center; justify-content: center;
-            padding: 15px 40px; border: 1px solid var(--color-border); color: var(--color-text);
-            font-family: var(--font-serif); font-size: var(--font-sm); letter-spacing: 0.15em;
-            overflow: hidden; transition: color 0.4s ease, border-color 0.4s ease; background: transparent; cursor: pointer;
-        }
-        .elegant-btn::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--color-accent); transform: scaleX(0); transform-origin: right;
-            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index: -1;
-        }
-        .elegant-btn:hover { border-color: var(--color-accent); color: var(--color-bg); }
-        .elegant-btn:hover::before { transform: scaleX(1); transform-origin: left; }
-
-        /* ==========================================================================
-           3. Header & Navigation
+           3. Header & Navigation (3x2 Grid)
            ========================================================================== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
@@ -118,7 +107,7 @@
             visibility: hidden; opacity: 0; transition: visibility 0s 0.5s, opacity 0.5s ease;
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
-        /* 圧倒的に美しい 3x2 のグリッドレイアウトへ改修 */
+        
         .nav-list { 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -130,7 +119,6 @@
         }
         @media (max-width: 768px) {
             .nav-list {
-                /* スマホ時は縦の隙間を少し絞り、1画面に綺麗に収める */
                 gap: var(--space-sm) var(--space-xs);
             }
         }
@@ -138,11 +126,10 @@
         .nav-item { overflow: hidden; }
         .nav-link {
             display: block; font-family: var(--font-serif); 
-            /* 見切れ防止とインパクトの両立。PCは大きく、スマホは画面幅に合わせて縮小 */
             font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap; /* テキストの折り返しを防ぎ、美しさを担保 */
+            white-space: nowrap;
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
@@ -156,7 +143,7 @@
         .breadcrumb li:not(:last-child)::after { content: '>'; margin: 0 10px; color: var(--color-border); }
 
         /* ==========================================================================
-           5. Concept Sections (オリジナル構造の踏襲)
+           5. Concept Sections
            ========================================================================== */
         .concept-section {
             padding: var(--space-lg) 0;
@@ -193,48 +180,21 @@
         
         .concept-text {
             font-size: var(--font-lg);
-            line-height: 2.2;
             text-align: center;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        /* 略歴テーブル */
-        .history-table {
-            width: 100%;
-            max-width: 700px;
-            margin: var(--space-md) auto 0;
-            border-collapse: collapse;
-        }
-        .history-table th, .history-table td {
-            padding: 15px 0;
-            border-bottom: 1px solid var(--color-border);
-            text-align: left;
-            font-size: var(--font-base);
-        }
-        .history-table th {
-            width: 30%;
-            font-family: var(--font-serif);
-            color: var(--color-accent);
-        }
-        @media (max-width: 768px) {
-            .history-table th, .history-table td { display: block; width: 100%; }
-            .history-table th { border-bottom: none; padding-bottom: 5px; }
-            .history-table td { padding-top: 0; padding-bottom: 15px; }
-        }
-
         /* ==========================================================================
-           6. Contact Parallax (共通)
+           6. Contact Parallax
            ========================================================================== */
         .contact_info_02 { position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop'); }
         .contact_info_02::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.85); }
         .contact_info_02_inner { position: relative; z-index: 1; padding: var(--space-lg) 0; text-align: center; }
-        .contact-title { font-size: var(--font-xl); margin-bottom: 10px; }
-        .contact-subtitle { font-size: var(--font-sm); color: var(--color-text-muted); font-family: var(--font-sans); letter-spacing: 0.2em; }
         .tel-number { font-size: 2.5rem; color: var(--color-accent); display: block; margin: var(--space-xs) 0; }
 
         /* ==========================================================================
-           7. Footer (共通)
+           7. Footer
            ========================================================================== */
         footer { padding: var(--space-md) 0; text-align: center; font-size: var(--font-xs); color: var(--color-text-muted); border-top: 1px solid var(--color-border); }
         .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
@@ -258,7 +218,6 @@
   </header>
 
   <nav class="nav-overlay" id="nav-overlay">
-      <!-- HOMEを外し、完璧な3x2グリッドを実現 -->
       <ul class="nav-list">
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
@@ -268,8 +227,9 @@
           <li class="nav-item"><a href="faq.html" class="nav-link">よくあるご質問</a></li>
       </ul>
   </nav>
+
   <main>
-      <!-- Page Header & Breadcrumb -->
+      <!-- Page Header -->
       <div class="page-header reveal-fade">
           <h1 class="page-title text-serif">こだわり</h1>
           <ul class="breadcrumb">
@@ -282,113 +242,65 @@
       <section class="concept-section">
           <div class="container container-narrow">
               <figure class="concept-figure reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 1：こだわりの食材（例：新鮮な魚介など） -->
-                  <img src="" alt="こだわりの食材" class="concept-img" />
+                  <img src="スクリーンショット 2026-03-17 205250.png" alt="こだわりの食材" class="concept-img" />
               </figure>
               <h2 class="concept-title text-serif reveal-up">こだわりの食材</h2>
               <p class="concept-text text-serif reveal-up mgt40">
-                  にぎりやおつまみで使う食材は、毎朝市場で厳選して仕入れています。<br class="pc-only">
-                  四季を映す旬の魚介と、日本伝統の器を取り入れているのが当店のこだわりです。
+                  <span class="text-unit">にぎりや</span><span class="text-unit">おつまみで</span><span class="text-unit">使う食材は、</span><br>
+                  <span class="text-unit">毎朝市場で</span><span class="text-unit">厳選して</span><span class="text-unit">仕入れています。</span><br>
+                  <span class="text-unit">四季を映す</span><span class="text-unit">旬の魚介と、</span><span class="text-unit">日本伝統の</span><span class="text-unit">器を取り入れているのが</span><br>
+                  <span class="text-unit">当店の</span><span class="text-unit">こだわりです。</span>
               </p>
           </div>
       </section>
 
-      <!-- セクション2: 磨き抜かれた匠の技 -->
+      <!-- セクション2: お料理によく合うお飲み物 -->
       <section class="concept-section">
           <div class="container container-narrow">
               <figure class="concept-figure reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 2：匠の技（例：寿司を握る大将の手元） -->
-                  <img src="" alt="磨き抜かれた匠の技" class="concept-img" />
-              </figure>
-              <h2 class="concept-title text-serif reveal-up">磨き抜かれた匠の技</h2>
-              <p class="concept-text text-serif reveal-up mgt40">
-                  料理長・林家克三郎の、長年にわたり磨かれ続けた職人技をご堪能ください。<br class="pc-only">
-                  素材の命を活かしきる「本物の味」を追求しております。
-              </p>
-              
-              <!-- 略歴テーブル -->
-              <h3 class="text-serif text-center mgt40 reveal-up" style="font-size: 1.2rem; letter-spacing: 0.15em;">料理長略歴</h3>
-              <table class="history-table reveal-up">
-                  <tbody>
-                      <tr>
-                          <th>1998年</th>
-                          <td>寿司職人として修行を開始</td>
-                      </tr>
-                      <tr>
-                          <th>2015年</th>
-                          <td>都内名店にて料理長に就任</td>
-                      </tr>
-                      <tr>
-                          <th>2023年</th>
-                          <td>銀座 聖藍の料理長に就任</td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-      </section>
-
-      <!-- セクション3: お料理によく合うお飲み物 -->
-      <section class="concept-section">
-          <div class="container container-narrow">
-              <figure class="concept-figure reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 3：お飲み物（例：日本酒と酒器） -->
-                  <img src="" alt="お料理によく合うお飲み物" class="concept-img" />
+                  <img src="スクリーンショット 2026-03-17 200757.png" alt="お料理によく合うお飲み物" class="concept-img" />
               </figure>
               <h2 class="concept-title text-serif reveal-up">お料理によく合うお飲み物</h2>
               <p class="concept-text text-serif reveal-up mgt40">
-                  当店のお料理によく合う全国の日本酒や焼酎を揃えています。<br class="pc-only">
-                  お食事に合わせたご提案もいたしますので、お気軽にお尋ねください。
+                  <span class="text-unit">当店のお料理に</span><span class="text-unit">よく合う</span><span class="text-unit">全国の日本酒や</span><span class="text-unit">焼酎を</span><span class="text-unit">揃えています。</span><br>
+                  <span class="text-unit">お食事に合わせた</span><span class="text-unit">ご提案も</span><span class="text-unit">いたしますので、</span><br>
+                  <span class="text-unit">お気軽に</span><span class="text-unit">お尋ねください。</span>
               </p>
           </div>
       </section>
 
-      <!-- セクション4: 選び抜かれた器と空間 -->
+      <!-- セクション3: 洗練された空間 -->
       <section class="concept-section">
           <div class="container container-narrow">
               <figure class="concept-figure reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 4：空間や器（例：美しい和食器やカウンター） -->
-                  <img src="" alt="洗練された空間" class="concept-img" />
+                  <img src="スクリーンショット 2026-03-17 200221.png" alt="洗練された空間" class="concept-img" />
               </figure>
               <h2 class="concept-title text-serif reveal-up">洗練された空間</h2>
               <p class="concept-text text-serif reveal-up mgt40">
-                  完全個室を備えており、ご会合や大切なご接待などにもご利用いただけます。<br class="pc-only">
-                  白木が香るカウンター席や完全個室で、至福のひとときをお過ごしください。
+                  <span class="text-unit">完全個室を</span><span class="text-unit">備えており、</span><br>
+                  <span class="text-unit">ご会合や</span><span class="text-unit">大切なご接待などにも</span><span class="text-unit">ご利用いただけます。</span><br>
+                  <span class="text-unit">白木が香る</span><span class="text-unit">カウンター席や</span><span class="text-unit">完全個室で、</span><br>
+                  <span class="text-unit">至福のひとときを</span><span class="text-unit">お過ごしください。</span>
               </p>
           </div>
       </section>
 
-      <!-- Contact Info Parallax -->
+      <!-- Contact Info -->
       <section class="contact_info_02">
           <div class="contact_info_02_inner reveal-fade">
               <div class="container container-narrow">
-                  <h2 class="contact-title text-serif">お問い合わせ</h2>
-                  <span class="contact-subtitle">銀座 聖藍</span>
-                  
-                  <p class="text-serif mgt40" style="line-height: 2.2;">
-                      銀座 聖藍は、東京都中央区銀座にある完全予約制の寿司店です。<br class="pc-only">
-                      こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br class="pc-only">
-                      お席はカウンター席・完全個室をご用意しております。<br class="pc-only">
-                      当店へのご予約・お問い合わせはお電話にて承っております。
+                  <h2 class="text-serif" style="font-size: var(--font-xl); margin-bottom: 20px;">お問い合わせ</h2>
+                  <p class="text-serif" style="line-height: 2.6;">
+                      <span class="text-unit">銀座 聖藍は、</span><span class="text-unit">東京都中央区銀座にある</span><br>
+                      <span class="text-unit">完全予約制の寿司店です。</span><br>
+                      <span class="text-unit">こだわりの食材と、</span><span class="text-unit">匠の技を</span><span class="text-unit">ご堪能ください。</span>
                   </p>
-                  
                   <div class="mgt40">
-                      <span class="text-serif" style="font-size: 0.9rem; color: var(--color-text-muted);">TEL</span>
                       <a href="tel:03-3572-6555" class="tel-number text-serif">03-3572-6555</a>
                   </div>
-                  
-                  <div class="mgt40">
-                      <a href="#" class="elegant-btn" style="background-color: var(--color-accent); color: #000;">Webからのご予約はこちら</a>
-                  </div>
-                  
-                  <p class="text-serif mgt40" style="font-size: 0.9rem; color: var(--color-text-muted);">
-                      東京都中央区銀座6-9-14 方圓ビル 2F<br>
-                      11:30～14:00 / 17:00～22:00<br>
-                      [定休日]<br>水曜日・日曜日<br>
-                  </p>
               </div>
           </div>
       </section>
-
   </main>
 
   <!-- Footer -->
@@ -402,14 +314,11 @@
               <li><a href="gallery.html">ギャラリー</a></li>
               <li><a href="flow.html">ご予約の流れ</a></li>
               <li><a href="faq.html">よくあるご質問</a></li>
-              <li><a href="policy.html">プライバシーポリシー</a></li>
           </ul>
-          <p class="text-serif" style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">銀座 聖藍</p>
-          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.<br>【掲載の記事・写真・イラストなどの無断複写・転載を禁じます】</p>
+          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.</p>
       </div>
   </footer>
 
-  <!-- Scripts -->
   <script>
       document.addEventListener("DOMContentLoaded", () => {
           gsap.registerPlugin(ScrollTrigger);
@@ -420,13 +329,11 @@
           const menuBtn = document.getElementById('menu-btn');
           const navOverlay = document.getElementById('nav-overlay');
           const navLinks = document.querySelectorAll('.nav-link');
-          let isMenuOpen = false;
 
           const toggleMenu = () => {
-              isMenuOpen = !isMenuOpen;
               menuBtn.classList.toggle('active');
               navOverlay.classList.toggle('active');
-              document.body.classList.toggle('no-scroll', isMenuOpen);
+              document.body.classList.toggle('no-scroll');
           };
 
           menuBtn.addEventListener('click', toggleMenu);
@@ -435,22 +342,18 @@
           /* =================================================================
              2. ScrollTrigger Animations
              ================================================================= */
-          
-          // Initial Load Reveal
           gsap.to(".page-header", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 0.2 });
 
-          // Reveal Up Elements
           gsap.utils.toArray('.reveal-up').forEach(el => {
               gsap.to(el, {
-                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+                  scrollTrigger: { trigger: el, start: "top 85%" },
                   y: 0, opacity: 1, duration: 1, ease: "power3.out"
               });
           });
 
-          // Reveal Fade Elements
           gsap.utils.toArray('.reveal-fade').forEach(el => {
               gsap.to(el, {
-                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+                  scrollTrigger: { trigger: el, start: "top 85%" },
                   opacity: 1, duration: 1.5, ease: "power2.out"
               });
           });
