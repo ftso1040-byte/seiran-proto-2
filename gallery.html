@@ -19,7 +19,7 @@
 
     <style>
         /* ==========================================================================
-           1. CSS Variables & Reset (The "Seiran" Blue)
+           1. CSS Variables & Reset
            ========================================================================== */
         :root {
             --color-bg: #030508;
@@ -54,12 +54,19 @@
             color: var(--color-text);
             font-family: var(--font-sans);
             font-size: var(--font-base);
-            line-height: 2;
-            letter-spacing: 0.1em;
+            line-height: 2.6; /* 行間を広げ、視覚的ストレスを軽減 */
+            letter-spacing: 0.12em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
         body.no-scroll { overflow: hidden; }
+
+        /* 「文字の泣き」を根絶する絶対防御のクラス */
+        .text-unit {
+            display: inline-block;
+            white-space: nowrap; /* 塊の中での改行を物理的に禁止 */
+            vertical-align: top;
+        }
 
         a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--color-accent); }
@@ -71,33 +78,12 @@
 
         /* Layout Utils */
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-sm); }
-        .container-narrow { max-width: 900px; }
         .section-padding { padding: var(--space-md) 0; }
         .text-center { text-align: center; }
-        .mgt20 { margin-top: 20px; }
         .mgt40 { margin-top: 40px; }
-        .pc-only { display: none; }
-        @media (min-width: 768px) { .pc-only { display: block; } }
 
         /* ==========================================================================
-           2. Elegant Button
-           ========================================================================== */
-        .elegant-btn {
-            position: relative; display: inline-flex; align-items: center; justify-content: center;
-            padding: 15px 40px; border: 1px solid var(--color-border); color: var(--color-text);
-            font-family: var(--font-serif); font-size: var(--font-sm); letter-spacing: 0.15em;
-            overflow: hidden; transition: color 0.4s ease, border-color 0.4s ease; background: transparent; cursor: pointer;
-        }
-        .elegant-btn::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--color-accent); transform: scaleX(0); transform-origin: right;
-            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index: -1;
-        }
-        .elegant-btn:hover { border-color: var(--color-accent); color: var(--color-bg); }
-        .elegant-btn:hover::before { transform: scaleX(1); transform-origin: left; }
-
-        /* ==========================================================================
-           3. Header & Navigation
+           3. Header & Navigation (3x2 Grid)
            ========================================================================== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
@@ -120,7 +106,7 @@
             visibility: hidden; opacity: 0; transition: visibility 0s 0.5s, opacity 0.5s ease;
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
-        /* 圧倒的に美しい 3x2 のグリッドレイアウトへ改修 */
+        
         .nav-list { 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -131,20 +117,16 @@
             text-align: center;
         }
         @media (max-width: 768px) {
-            .nav-list {
-                /* スマホ時は縦の隙間を少し絞り、1画面に綺麗に収める */
-                gap: var(--space-sm) var(--space-xs);
-            }
+            .nav-list { gap: var(--space-sm) var(--space-xs); }
         }
 
         .nav-item { overflow: hidden; }
         .nav-link {
             display: block; font-family: var(--font-serif); 
-            /* 見切れ防止とインパクトの両立。PCは大きく、スマホは画面幅に合わせて縮小 */
             font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap; /* テキストの折り返しを防ぎ、美しさを担保 */
+            white-space: nowrap;
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
@@ -160,63 +142,26 @@
         /* ==========================================================================
            5. Gallery Grid
            ========================================================================== */
-        .gallery-intro {
-            font-size: var(--font-base);
-            line-height: 2;
-            color: var(--color-text-muted);
-            margin-bottom: var(--space-md);
-        }
+        .gallery-intro { font-size: var(--font-base); text-align: center; max-width: 800px; margin: 0 auto var(--space-md); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 15px; }
+        @media (min-width: 576px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 992px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 15px;
-        }
-        @media (min-width: 576px) {
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (min-width: 992px) {
-            .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        }
-
-        .gallery-item {
-            width: 100%;
-            aspect-ratio: 1 / 1; /* 正方形にトリミング */
-            overflow: hidden;
-            position: relative;
-            background-color: var(--color-surface); /* 画像読み込み前のプレースホルダー色 */
-            transform: translateZ(0); /* Safariバグ対策 */
-        }
-
-        .gallery-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .gallery-item:hover .gallery-img {
-            transform: scale(1.05); /* ホバーで少しズーム */
-        }
+        .gallery-item { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; position: relative; background-color: var(--color-surface); transform: translateZ(0); }
+        .gallery-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .gallery-item:hover .gallery-img { transform: scale(1.05); }
 
         /* ==========================================================================
-           6. Contact Parallax (共通)
+           6. Contact Info & Footer
            ========================================================================== */
         .contact_info_02 { position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop'); }
         .contact_info_02::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.85); }
         .contact_info_02_inner { position: relative; z-index: 1; padding: var(--space-lg) 0; text-align: center; }
-        .contact-title { font-size: var(--font-xl); margin-bottom: 10px; }
-        .contact-subtitle { font-size: var(--font-sm); color: var(--color-text-muted); font-family: var(--font-sans); letter-spacing: 0.2em; }
         .tel-number { font-size: 2.5rem; color: var(--color-accent); display: block; margin: var(--space-xs) 0; }
 
-        /* ==========================================================================
-           7. Footer (共通)
-           ========================================================================== */
         footer { padding: var(--space-md) 0; text-align: center; font-size: var(--font-xs); color: var(--color-text-muted); border-top: 1px solid var(--color-border); }
         .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
-        .copyright { margin-top: 20px; letter-spacing: 0.1em; }
 
-        /* Animation Utilities */
         .reveal-up { opacity: 0; transform: translateY(40px); }
         .reveal-fade { opacity: 0; }
     </style>
@@ -233,8 +178,7 @@
       </button>
   </header>
 
-     <nav class="nav-overlay" id="nav-overlay">
-      <!-- HOMEを外し、完璧な3x2グリッドを実現 -->
+  <nav class="nav-overlay" id="nav-overlay">
       <ul class="nav-list">
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
@@ -244,10 +188,8 @@
           <li class="nav-item"><a href="faq.html" class="nav-link">よくあるご質問</a></li>
       </ul>
   </nav>
-  </nav>
 
   <main>
-      <!-- Page Header & Breadcrumb -->
       <div class="page-header reveal-fade">
           <h1 class="page-title text-serif">ギャラリー</h1>
           <ul class="breadcrumb">
@@ -256,78 +198,43 @@
           </ul>
       </div>
 
-      <!-- Gallery Section -->
       <section class="section-padding" style="padding-top: 0;">
           <div class="container">
-              
-              <p class="gallery-intro text-serif text-center reveal-up">
-                  店内の様子やお料理のイメージギャラリーをご用意しました。<br class="pc-only">
-                  是非ご覧ください。
+              <p class="gallery-intro text-serif reveal-up">
+                  <span class="text-unit">店内の様子や</span><span class="text-unit">お料理の</span><br class="sp-only">
+                  <span class="text-unit">イメージギャラリーを</span><span class="text-unit">ご用意しました。</span><br>
+                  <span class="text-unit">是非ご覧ください。</span>
               </p>
 
-              <!-- Gallery Grid (3列レイアウト) -->
               <div class="gallery-grid mgt40">
-                  
-                  <!-- ▼ 画像差し替え箇所 1〜15：ギャラリーの画像を順に設定してください -->
-                  <div class="スクリーンショット 2026-03-17 200221.png"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="スクリーンショット 2026-03-17 200707.png"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="スクリーンショット 2026-03-17 200646.png"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  
-                  <div class="スクリーンショット 2026-03-17 200757.png"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="スクリーンショット 2026-03-17 205250.png"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="スクリーンショット 2026-03-17 205753.png"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  
-                  <div class="スクリーンショット 2026-03-17 205250.png"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="" alt="ギャラリー画像" class="gallery-img"></div>
-
+                  <!--  -->
+                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200221.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200707.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200646.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200757.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 205250.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 205753.png" alt="ギャラリー画像" class="gallery-img"></div>
               </div>
           </div>
       </section>
 
-      <!-- Contact Info Parallax -->
       <section class="contact_info_02">
           <div class="contact_info_02_inner reveal-fade">
-              <div class="container container-narrow">
-                  <h2 class="contact-title text-serif">お問い合わせ</h2>
-                  <span class="contact-subtitle">銀座 聖藍</span>
-                  
-                  <p class="text-serif mgt40" style="line-height: 2.2;">
-                      銀座 聖藍は、東京都中央区銀座にある完全予約制の寿司店です。<br class="pc-only">
-                      こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br class="pc-only">
-                      お席はカウンター席・完全個室をご用意しております。<br class="pc-only">
-                      当店へのご予約・お問い合わせはお電話にて承っております。
+              <div class="container">
+                  <h2 class="text-serif" style="font-size: var(--font-xl); margin-bottom: 20px;">お問い合わせ</h2>
+                  <p class="text-serif" style="line-height: 2.6;">
+                      <span class="text-unit">銀座 聖藍は、</span><span class="text-unit">東京都中央区銀座にある</span><br>
+                      <span class="text-unit">完全予約制の寿司店です。</span><br>
+                      <span class="text-unit">こだわりの食材と、</span><span class="text-unit">匠の技を</span><span class="text-unit">ご堪能ください。</span>
                   </p>
-                  
                   <div class="mgt40">
-                      <span class="text-serif" style="font-size: 0.9rem; color: var(--color-text-muted);">TEL</span>
                       <a href="tel:03-3572-6555" class="tel-number text-serif">03-3572-6555</a>
                   </div>
-                  
-                  <div class="mgt40">
-                      <a href="#" class="elegant-btn" style="background-color: var(--color-accent); color: #000;">Webからのご予約はこちら</a>
-                  </div>
-                  
-                  <p class="text-serif mgt40" style="font-size: 0.9rem; color: var(--color-text-muted);">
-                      東京都中央区銀座6-9-14 方圓ビル 2F<br>
-                      11:30～14:00 / 17:00～22:00<br>
-                      [定休日]<br>水曜日・日曜日<br>
-                  </p>
               </div>
           </div>
       </section>
-
   </main>
 
-  <!-- Footer -->
   <footer>
       <div class="container">
           <ul class="footer-nav text-serif">
@@ -338,57 +245,27 @@
               <li><a href="gallery.html">ギャラリー</a></li>
               <li><a href="flow.html">ご予約の流れ</a></li>
               <li><a href="faq.html">よくあるご質問</a></li>
-              <li><a href="policy.html">プライバシーポリシー</a></li>
           </ul>
-          <p class="text-serif" style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">銀座 聖藍</p>
-          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.<br>【掲載の記事・写真・イラストなどの無断複写・転載を禁じます】</p>
+          <p>&copy; Ginza Seiran All Rights Reserved.</p>
       </div>
   </footer>
 
-  <!-- Scripts -->
   <script>
       document.addEventListener("DOMContentLoaded", () => {
           gsap.registerPlugin(ScrollTrigger);
-
-          /* =================================================================
-             1. Hamburger Menu Logic
-             ================================================================= */
           const menuBtn = document.getElementById('menu-btn');
           const navOverlay = document.getElementById('nav-overlay');
-          const navLinks = document.querySelectorAll('.nav-link');
-          let isMenuOpen = false;
-
           const toggleMenu = () => {
-              isMenuOpen = !isMenuOpen;
               menuBtn.classList.toggle('active');
               navOverlay.classList.toggle('active');
-              document.body.classList.toggle('no-scroll', isMenuOpen);
+              document.body.classList.toggle('no-scroll');
           };
-
           menuBtn.addEventListener('click', toggleMenu);
-          navLinks.forEach(link => link.addEventListener('click', toggleMenu));
-
-          /* =================================================================
-             2. ScrollTrigger Animations
-             ================================================================= */
-          
-          // Initial Load Reveal
-          gsap.to(".page-header", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 0.2 });
-
-          // Reveal Up Elements
           gsap.utils.toArray('.reveal-up').forEach(el => {
-              gsap.to(el, {
-                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
-                  y: 0, opacity: 1, duration: 1, ease: "power3.out"
-              });
+              gsap.to(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 0, opacity: 1, duration: 1 });
           });
-
-          // Reveal Fade Elements
           gsap.utils.toArray('.reveal-fade').forEach(el => {
-              gsap.to(el, {
-                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
-                  opacity: 1, duration: 1.5, ease: "power2.out"
-              });
+              gsap.to(el, { scrollTrigger: { trigger: el, start: "top 90%" }, opacity: 1, duration: 1.5 });
           });
       });
   </script>
