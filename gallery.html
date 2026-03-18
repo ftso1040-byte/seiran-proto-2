@@ -54,7 +54,7 @@
             color: var(--color-text);
             font-family: var(--font-sans);
             font-size: var(--font-base);
-            line-height: 2.6; /* 行間を広げ、視覚的ストレスを軽減 */
+            line-height: 2.6;
             letter-spacing: 0.12em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
@@ -64,7 +64,7 @@
         /* 「文字の泣き」を根絶する絶対防御のクラス */
         .text-unit {
             display: inline-block;
-            white-space: nowrap; /* 塊の中での改行を物理的に禁止 */
+            white-space: nowrap;
             vertical-align: top;
         }
 
@@ -80,7 +80,10 @@
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-sm); }
         .section-padding { padding: var(--space-md) 0; }
         .text-center { text-align: center; }
+        .mgt20 { margin-top: 20px; }
         .mgt40 { margin-top: 40px; }
+        .sp-only { display: block; }
+        @media (min-width: 768px) { .sp-only { display: none; } }
 
         /* ==========================================================================
            3. Header & Navigation (3x2 Grid)
@@ -142,14 +145,22 @@
         /* ==========================================================================
            5. Gallery Grid
            ========================================================================== */
-        .gallery-intro { font-size: var(--font-base); text-align: center; max-width: 800px; margin: 0 auto var(--space-md); }
+        .gallery-intro { font-size: var(--font-lg); text-align: center; max-width: 800px; margin: 0 auto var(--space-md); }
         .gallery-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 15px; }
         @media (min-width: 576px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 992px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
 
-        .gallery-item { width: 100%; aspect-ratio: 1 / 1; overflow: hidden; position: relative; background-color: var(--color-surface); transform: translateZ(0); }
-        .gallery-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-        .gallery-item:hover .gallery-img { transform: scale(1.05); }
+        .gallery-item { 
+            width: 100%; 
+            aspect-ratio: 1 / 1; 
+            overflow: hidden; 
+            position: relative; 
+            background-color: #111; /* 読み込み前の背景 */
+            opacity: 0; /* JSで制御 */
+            transform: translateY(20px);
+        }
+        .gallery-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+        .gallery-item:hover .gallery-img { transform: scale(1.08); }
 
         /* ==========================================================================
            6. Contact Info & Footer
@@ -163,7 +174,6 @@
         .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
 
         .reveal-up { opacity: 0; transform: translateY(40px); }
-        .reveal-fade { opacity: 0; }
     </style>
 </head>
 <body>
@@ -183,14 +193,14 @@
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
           <li class="nav-item"><a href="menu.html" class="nav-link">お品書き</a></li>
-          <li class="nav-item"><a href="gallery.html" class="nav-link">ギャラリー</a></li>
+          <li class="nav-item"><a href="about.html" class="nav-link">ギャラリー</a></li>
           <li class="nav-item"><a href="flow.html" class="nav-link">ご予約の流れ</a></li>
           <li class="nav-item"><a href="faq.html" class="nav-link">よくあるご質問</a></li>
       </ul>
   </nav>
 
   <main>
-      <div class="page-header reveal-fade">
+      <div class="page-header">
           <h1 class="page-title text-serif">ギャラリー</h1>
           <ul class="breadcrumb">
               <li><a href="index.html">HOME</a></li>
@@ -207,27 +217,27 @@
               </p>
 
               <div class="gallery-grid mgt40">
-                  <!--  -->
-                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200221.png" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200707.png" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200646.png" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 200757.png" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 205250.png" alt="ギャラリー画像" class="gallery-img"></div>
-                  <div class="gallery-item reveal-fade"><img src="スクリーンショット 2026-03-17 205753.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <!-- ギャラリー画像リスト -->
+                  <div class="gallery-item"><img src="スクリーンショット 2026-03-17 200221.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item"><img src="スクリーンショット 2026-03-17 200707.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item"><img src="スクリーンショット 2026-03-17 200646.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item"><img src="スクリーンショット 2026-03-17 200757.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item"><img src="スクリーンショット 2026-03-17 205250.png" alt="ギャラリー画像" class="gallery-img"></div>
+                  <div class="gallery-item"><img src="スクリーンショット 2026-03-17 205753.png" alt="ギャラリー画像" class="gallery-img"></div>
               </div>
           </div>
       </section>
 
       <section class="contact_info_02">
-          <div class="contact_info_02_inner reveal-fade">
+          <div class="contact_info_02_inner">
               <div class="container">
-                  <h2 class="text-serif" style="font-size: var(--font-xl); margin-bottom: 20px;">お問い合わせ</h2>
-                  <p class="text-serif" style="line-height: 2.6;">
+                  <h2 class="text-serif reveal-up" style="font-size: var(--font-xl); margin-bottom: 20px;">お問い合わせ</h2>
+                  <p class="text-serif reveal-up" style="line-height: 2.6;">
                       <span class="text-unit">銀座 聖藍は、</span><span class="text-unit">東京都中央区銀座にある</span><br>
                       <span class="text-unit">完全予約制の寿司店です。</span><br>
                       <span class="text-unit">こだわりの食材と、</span><span class="text-unit">匠の技を</span><span class="text-unit">ご堪能ください。</span>
                   </p>
-                  <div class="mgt40">
+                  <div class="mgt40 reveal-up">
                       <a href="tel:03-3572-6555" class="tel-number text-serif">03-3572-6555</a>
                   </div>
               </div>
@@ -242,17 +252,19 @@
               <li><a href="about.html">店舗案内</a></li>
               <li><a href="concept.html">こだわり</a></li>
               <li><a href="menu.html">お品書き</a></li>
-              <li><a href="gallery.html">ギャラリー</a></li>
+              <li><a href="about.html">ギャラリー</a></li>
               <li><a href="flow.html">ご予約の流れ</a></li>
               <li><a href="faq.html">よくあるご質問</a></li>
           </ul>
-          <p>&copy; Ginza Seiran All Rights Reserved.</p>
+          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.</p>
       </div>
   </footer>
 
   <script>
       document.addEventListener("DOMContentLoaded", () => {
           gsap.registerPlugin(ScrollTrigger);
+
+          /* --- Hamburger Menu --- */
           const menuBtn = document.getElementById('menu-btn');
           const navOverlay = document.getElementById('nav-overlay');
           const toggleMenu = () => {
@@ -261,11 +273,31 @@
               document.body.classList.toggle('no-scroll');
           };
           menuBtn.addEventListener('click', toggleMenu);
+
+          /* --- Reveal Animations --- */
+          // テキスト等の出現
           gsap.utils.toArray('.reveal-up').forEach(el => {
-              gsap.to(el, { scrollTrigger: { trigger: el, start: "top 90%" }, y: 0, opacity: 1, duration: 1 });
+              gsap.to(el, { 
+                  scrollTrigger: { trigger: el, start: "top 92%" }, 
+                  y: 0, opacity: 1, duration: 1, ease: "power2.out" 
+              });
           });
-          gsap.utils.toArray('.reveal-fade').forEach(el => {
-              gsap.to(el, { scrollTrigger: { trigger: el, start: "top 90%" }, opacity: 1, duration: 1.5 });
+
+          // ギャラリー画像のスタッガー出現（ここを強化しました）
+          gsap.to(".gallery-item", {
+              scrollTrigger: {
+                  trigger: ".gallery-grid",
+                  start: "top 85%",
+              },
+              opacity: 1,
+              y: 0,
+              duration: 1.2,
+              stagger: 0.15,
+              ease: "power3.out",
+              onComplete: () => {
+                  // 出現後にScrollTriggerをリフレッシュして位置を確定
+                  ScrollTrigger.refresh();
+              }
           });
       });
   </script>
