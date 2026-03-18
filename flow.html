@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>ご予約の流れ | 銀座 聖藍｜東京都中央区銀座にある寿司店</title>
-    <meta name="description" content="銀座 聖藍を初めてご利用の方へ向けた、ご予約の流れをご案内いたします。ご予約はWebまたはお電話にて承っております。">
+    <meta name="description" content="銀座 聖藍を初めてご利用の方へ向けた、ご予約からご来店までの流れをご案内いたします。ご予約はWebまたはお電話にて承っております。">
     <meta name="keywords" content="東京都,中央区,銀座,寿司,鮨,完全予約制,ご予約の流れ,銀座 聖藍">
 
     <!-- Google Fonts -->
@@ -19,7 +19,7 @@
 
     <style>
         /* ==========================================================================
-           1. CSS Variables & Reset (The "Seiran" Blue)
+           1. CSS Variables & Reset
            ========================================================================== */
         :root {
             --color-bg: #030508;
@@ -54,12 +54,19 @@
             color: var(--color-text);
             font-family: var(--font-sans);
             font-size: var(--font-base);
-            line-height: 2;
-            letter-spacing: 0.1em;
+            line-height: 2.6;
+            letter-spacing: 0.12em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
         body.no-scroll { overflow: hidden; }
+
+        /* 「文字の泣き」を根絶する絶対防御のクラス */
+        .text-unit {
+            display: inline-block;
+            white-space: nowrap; /* 塊の中での改行を物理的に禁止 */
+            vertical-align: top;
+        }
 
         a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--color-accent); }
@@ -97,7 +104,7 @@
         .elegant-btn:hover::before { transform: scaleX(1); transform-origin: left; }
 
         /* ==========================================================================
-           3. Header & Navigation
+           3. Header & Navigation (Fixed 3x2 Grid)
            ========================================================================== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
@@ -120,7 +127,7 @@
             visibility: hidden; opacity: 0; transition: visibility 0s 0.5s, opacity 0.5s ease;
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
-        /* 圧倒的に美しい 3x2 のグリッドレイアウトへ改修 */
+        
         .nav-list { 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -131,20 +138,16 @@
             text-align: center;
         }
         @media (max-width: 768px) {
-            .nav-list {
-                /* スマホ時は縦の隙間を少し絞り、1画面に綺麗に収める */
-                gap: var(--space-sm) var(--space-xs);
-            }
+            .nav-list { gap: var(--space-sm) var(--space-xs); }
         }
 
         .nav-item { overflow: hidden; }
         .nav-link {
             display: block; font-family: var(--font-serif); 
-            /* 見切れ防止とインパクトの両立。PCは大きく、スマホは画面幅に合わせて縮小 */
             font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap; /* テキストの折り返しを防ぎ、美しさを担保 */
+            white-space: nowrap;
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
@@ -160,135 +163,41 @@
         /* ==========================================================================
            5. Flow Section Styles
            ========================================================================== */
-        .flow-lead-img {
-            width: 100%;
-            height: 40vh;
-            object-fit: cover;
-            margin-bottom: var(--space-md);
-            opacity: 0.9;
-        }
-        @media (min-width: 768px) {
-            .flow-lead-img { height: 50vh; }
-        }
+        .flow-lead-img { width: 100%; height: 40vh; object-fit: cover; margin-bottom: var(--space-md); opacity: 0.9; }
+        @media (min-width: 768px) { .flow-lead-img { height: 50vh; } }
 
-        .flow-intro {
-            font-size: var(--font-lg);
-            line-height: 2.2;
-            text-align: center;
-            margin-bottom: var(--space-md);
-        }
+        .flow-intro { font-size: var(--font-lg); text-align: center; margin-bottom: var(--space-md); }
 
-        /* 海外向けボタンのグリッド */
-        .lang-btn-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            max-width: 800px;
-            margin: var(--space-sm) auto var(--space-md);
-        }
-        @media(min-width: 576px) {
-            .lang-btn-grid { grid-template-columns: 1fr 1fr; }
-        }
-        @media(min-width: 992px) {
-            .lang-btn-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
-        }
+        .lang-btn-grid { display: grid; grid-template-columns: 1fr; gap: 15px; max-width: 800px; margin: var(--space-sm) auto var(--space-md); }
+        @media(min-width: 576px) { .lang-btn-grid { grid-template-columns: 1fr 1fr; } }
+        @media(min-width: 992px) { .lang-btn-grid { grid-template-columns: repeat(4, 1fr); } }
+        
         .lang-btn {
-            display: block;
-            text-align: center;
-            padding: 15px 10px;
-            background-color: transparent;
-            border: 1px solid var(--color-border);
-            color: var(--color-text);
-            transition: all 0.3s ease;
-            font-size: var(--font-sm);
+            display: block; text-align: center; padding: 15px 10px; background-color: transparent;
+            border: 1px solid var(--color-border); color: var(--color-text); transition: all 0.3s ease; font-size: var(--font-sm);
         }
-        .lang-btn:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent);
-        }
+        .lang-btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
 
-        /* ステップのレイアウト */
-        .step-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .step-item {
-            display: flex;
-            flex-direction: column;
-            background-color: var(--color-surface);
-            border: 1px solid var(--color-border);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .step-item:hover {
-            transform: translateX(10px);
-        }
-        @media(min-width: 768px) {
-            .step-item {
-                flex-direction: row;
-                align-items: stretch;
-            }
-        }
-        .step-header {
-            background-color: var(--color-accent);
-            padding: var(--space-sm);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        @media(min-width: 768px) {
-            .step-header {
-                flex: 0 0 160px;
-            }
-        }
-        .step-number {
-            font-size: 3rem;
-            color: var(--color-bg);
-            line-height: 1;
-            font-family: var(--font-serif);
-            font-weight: 600;
-            text-align: center;
-        }
-        .step-number small {
-            font-size: 1rem;
-            display: block;
-            letter-spacing: 0.1em;
-            color: var(--color-bg);
-            margin-bottom: 5px;
-        }
-        .step-content {
-            flex: 1;
-            padding: var(--space-sm);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .step-title {
-            font-size: var(--font-xl);
-            margin-bottom: var(--space-xs);
-            color: var(--color-text);
-        }
-        .step-desc {
-            color: var(--color-text-muted);
-            line-height: 2;
-            font-size: var(--font-base);
-        }
+        /* Steps */
+        .step-container { max-width: 800px; margin: 0 auto; }
+        .step-item { display: flex; flex-direction: column; background-color: var(--color-surface); border: 1px solid var(--color-border); overflow: hidden; transition: transform 0.3s ease; }
+        .step-item:hover { transform: translateX(10px); }
+        @media(min-width: 768px) { .step-item { flex-direction: row; align-items: stretch; } }
+        
+        .step-header { background-color: var(--color-accent); padding: var(--space-sm); display: flex; justify-content: center; align-items: center; }
+        @media(min-width: 768px) { .step-header { flex: 0 0 160px; } }
+        
+        .step-number { font-size: 3rem; color: var(--color-bg); line-height: 1; font-family: var(--font-serif); font-weight: 600; text-align: center; }
+        .step-number small { font-size: 1rem; display: block; letter-spacing: 0.1em; color: var(--color-bg); margin-bottom: 5px; }
+        
+        .step-content { flex: 1; padding: var(--space-sm); display: flex; flex-direction: column; justify-content: center; }
+        .step-title { font-size: var(--font-xl); margin-bottom: var(--space-xs); color: var(--color-text); }
+        .step-desc { color: var(--color-text-muted); line-height: 2.4; font-size: var(--font-base); }
 
-        /* 矢印のデザイン */
-        .step-arrow {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: var(--space-sm) 0;
-        }
+        .step-arrow { display: flex; justify-content: center; align-items: center; margin: var(--space-sm) 0; }
         .step-arrow::after {
-            content: '';
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 30px solid var(--color-accent); /* 金色の下向き三角形 */
-            animation: bounceDown 2s infinite;
+            content: ''; width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent;
+            border-top: 30px solid var(--color-accent); animation: bounceDown 2s infinite;
         }
         @keyframes bounceDown {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -297,7 +206,7 @@
         }
 
         /* ==========================================================================
-           6. Contact Parallax (共通)
+           6. Contact Info (Fixed Typography)
            ========================================================================== */
         .contact_info_02 { position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop'); }
         .contact_info_02::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.85); }
@@ -306,14 +215,10 @@
         .contact-subtitle { font-size: var(--font-sm); color: var(--color-text-muted); font-family: var(--font-sans); letter-spacing: 0.2em; }
         .tel-number { font-size: 2.5rem; color: var(--color-accent); display: block; margin: var(--space-xs) 0; }
 
-        /* ==========================================================================
-           7. Footer (共通)
-           ========================================================================== */
         footer { padding: var(--space-md) 0; text-align: center; font-size: var(--font-xs); color: var(--color-text-muted); border-top: 1px solid var(--color-border); }
         .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
         .copyright { margin-top: 20px; letter-spacing: 0.1em; }
 
-        /* Animation Utilities */
         .reveal-up { opacity: 0; transform: translateY(40px); }
         .reveal-fade { opacity: 0; }
     </style>
@@ -330,8 +235,7 @@
       </button>
   </header>
 
- <nav class="nav-overlay" id="nav-overlay">
-      <!-- HOMEを外し、完璧な3x2グリッドを実現 -->
+  <nav class="nav-overlay" id="nav-overlay">
       <ul class="nav-list">
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
@@ -341,10 +245,8 @@
           <li class="nav-item"><a href="faq.html" class="nav-link">よくあるご質問</a></li>
       </ul>
   </nav>
-  
 
   <main>
-      <!-- Page Header & Breadcrumb -->
       <div class="page-header reveal-fade">
           <h1 class="page-title text-serif">ご予約の流れ</h1>
           <ul class="breadcrumb">
@@ -357,95 +259,85 @@
           <div class="container container-narrow">
               
               <figure class="reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 1：ご予約の流れページのメイン画像 -->
                   <img src="スクリーンショット 2026-03-17 205753.png" alt="ご予約の流れ" class="flow-lead-img" />
               </figure>
 
               <p class="flow-intro text-serif reveal-up">
-                  当店を初めてご利用の方へ向けた、ご予約からご来店までの流れをご案内いたします。<br class="pc-only">
-                  ご予約はWeb、またはお電話にて承っております。
+                  <span class="text-unit">当店を</span><span class="text-unit">初めてご利用の方へ</span><span class="text-unit">向けた、</span><br>
+                  <span class="text-unit">ご予約から</span><span class="text-unit">ご来店までの流れを</span><span class="text-unit">ご案内いたします。</span><br>
+                  <span class="text-unit">ご予約はWeb、</span><span class="text-unit">またはお電話にて</span><span class="text-unit">承っております。</span>
               </p>
 
-              <!-- 海外向けボタンセクション -->
+              <!-- Language Buttons -->
               <div class="mgt40 reveal-up">
-                  <p class="text-center text-serif" style="color: var(--color-accent); letter-spacing: 0.1em;">
+                  <p class="text-center text-serif" style="color: var(--color-accent); letter-spacing: 0.1em; margin-bottom: 20px;">
                       To Guests from Overseas / 海外のお客様へ
                   </p>
                   <div class="lang-btn-grid">
-                      <a href="" target="_blank" rel="noopener" class="lang-btn">Reservation in English</a>
-                      <a href="" target="_blank" rel="noopener" class="lang-btn">繁體中文預約</a>
-                      <a href="" target="_blank" rel="noopener" class="lang-btn">简体中文预约</a>
-                      <a href="" target="_blank" rel="noopener" class="lang-btn">한국어 예약</a>
+                      <a href="" target="_blank" rel="noopener" class="lang-btn">English</a>
+                      <a href="" target="_blank" rel="noopener" class="lang-btn">繁體中文</a>
+                      <a href="" target="_blank" rel="noopener" class="lang-btn">简体中文</a>
+                      <a href="" target="_blank" rel="noopener" class="lang-btn">한국어</a>
                   </div>
               </div>
 
-              <!-- ステップセクション -->
+              <!-- Steps -->
               <div class="step-container mgt40">
-                  
                   <div class="step-item reveal-up">
-                      <div class="step-header">
-                          <p class="step-number"><small>STEP</small>01</p>
-                      </div>
+                      <div class="step-header"><p class="step-number"><small>STEP</small>01</p></div>
                       <div class="step-content">
                           <h2 class="step-title text-serif">ご予約</h2>
                           <p class="step-desc text-serif">
-                              ご予約はWeb予約、またはお電話にて承ります。<br>
-                              ご希望の日時、ご利用人数、ご利用のコース（昼・夜）をお知らせください。<br>
-                              完全個室（蘭・朝顔）をご希望の場合は、ご予約時にお申し出ください。<br><br>
-                              ※キャンセルや変更につきましては、店舗案内の「キャンセルポリシー」をご確認ください。
+                              <span class="text-unit">ご予約はWeb、</span><span class="text-unit">またはお電話にて</span><span class="text-unit">承ります。</span><br>
+                              <span class="text-unit">ご希望の日時、</span><span class="text-unit">ご利用人数、</span><span class="text-unit">ご利用コースを</span><span class="text-unit">お知らせください。</span>
                           </p>
                       </div>
                   </div>
 
-                  <!-- 追加された矢印 -->
                   <div class="step-arrow reveal-up"></div>
 
                   <div class="step-item reveal-up">
-                      <div class="step-header">
-                          <p class="step-number"><small>STEP</small>02</p>
-                      </div>
+                      <div class="step-header"><p class="step-number"><small>STEP</small>02</p></div>
                       <div class="step-content">
                           <h2 class="step-title text-serif">ご来店</h2>
                           <p class="step-desc text-serif">
-                              お食事は月替わりのおまかせコースとなります。<br>
-                              こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br><br>
-                              ※駐車場のご用意はございません。お車でお越しの方は近隣のコインパーキングをご利用ください。
+                              <span class="text-unit">お食事は</span><span class="text-unit">月替わりの</span><span class="text-unit">おまかせコースです。</span><br>
+                              <span class="text-unit">こだわりの食材と、</span><span class="text-unit">匠の技を</span><span class="text-unit">ご堪能ください。</span>
                           </p>
                       </div>
                   </div>
 
-                  <!-- 追加された矢印 -->
                   <div class="step-arrow reveal-up"></div>
 
                   <div class="step-item reveal-up">
-                      <div class="step-header">
-                          <p class="step-number"><small>STEP</small>03</p>
-                      </div>
+                      <div class="step-header"><p class="step-number"><small>STEP</small>03</p></div>
                       <div class="step-content">
                           <h2 class="step-title text-serif">お会計</h2>
                           <p class="step-desc text-serif">
-                              お会計はご自身のお席にて承ります。<br>
-                              現金のほか、各種クレジットカード、およびQRコード決済（d払い）がご利用いただけます。
+                              <span class="text-unit">お会計は</span><span class="text-unit">ご自身のお席にて</span><span class="text-unit">承ります。</span><br>
+                              <span class="text-unit">各種カード、</span><span class="text-unit">QRコード決済（d払い）が</span><span class="text-unit">ご利用いただけます。</span>
                           </p>
                       </div>
                   </div>
-
               </div>
           </div>
       </section>
 
-      <!-- Contact Info Parallax -->
+      <!-- Contact Info (Fixed Typography Applied Here) -->
       <section class="contact_info_02">
           <div class="contact_info_02_inner reveal-fade">
               <div class="container container-narrow">
                   <h2 class="contact-title text-serif">お問い合わせ</h2>
                   <span class="contact-subtitle">銀座 聖藍</span>
                   
-                  <p class="text-serif mgt40" style="line-height: 2.2;">
-                      銀座 聖藍は、東京都中央区銀座にある完全予約制の寿司店です。<br class="pc-only">
-                      こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br class="pc-only">
-                      お席はカウンター席・完全個室をご用意しております。<br class="pc-only">
-                      当店へのご予約・お問い合わせはお電話にて承っております。
+                  <p class="text-serif mgt40" style="line-height: 2.6;">
+                      <span class="text-unit">銀座 聖藍は、</span><span class="text-unit">東京都中央区銀座にある</span><br>
+                      <span class="text-unit">完全予約制の寿司店です。</span><br>
+                      <span class="text-unit">こだわりの食材と、</span><span class="text-unit">匠の技を</span><span class="text-unit">ご堪能ください。</span><br>
+                      <span class="text-unit">お席はカウンター席・個室を</span><br>
+                      <span class="text-unit">ご用意しております。</span><br>
+                      <span class="text-unit">当店へのご予約・お問い合わせは</span><br>
+                      <span class="text-unit">お電話にて</span><span class="text-unit">承っております。</span>
                   </p>
                   
                   <div class="mgt40">
@@ -456,12 +348,6 @@
                   <div class="mgt40">
                       <a href="#" class="elegant-btn" style="background-color: var(--color-accent); color: #000;">Webからのご予約はこちら</a>
                   </div>
-                  
-                  <p class="text-serif mgt40" style="font-size: 0.9rem; color: var(--color-text-muted);">
-                      東京都中央区銀座6-9-14 方圓ビル 2F<br>
-                      11:30～14:00 / 17:00～22:00<br>
-                      [定休日]<br>水曜日・日曜日<br>
-                  </p>
               </div>
           </div>
       </section>
@@ -482,52 +368,37 @@
               <li><a href="policy.html">プライバシーポリシー</a></li>
           </ul>
           <p class="text-serif" style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">銀座 聖藍</p>
-          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.<br>【掲載の記事・写真・イラストなどの無断複写・転載を禁じます】</p>
+          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.</p>
       </div>
   </footer>
 
-  <!-- Scripts -->
   <script>
       document.addEventListener("DOMContentLoaded", () => {
           gsap.registerPlugin(ScrollTrigger);
 
-          /* =================================================================
-             1. Hamburger Menu Logic
-             ================================================================= */
+          /* Hamburger Menu */
           const menuBtn = document.getElementById('menu-btn');
           const navOverlay = document.getElementById('nav-overlay');
-          const navLinks = document.querySelectorAll('.nav-link');
-          let isMenuOpen = false;
-
           const toggleMenu = () => {
-              isMenuOpen = !isMenuOpen;
               menuBtn.classList.toggle('active');
               navOverlay.classList.toggle('active');
-              document.body.classList.toggle('no-scroll', isMenuOpen);
+              document.body.classList.toggle('no-scroll');
           };
-
           menuBtn.addEventListener('click', toggleMenu);
-          navLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
-          /* =================================================================
-             2. ScrollTrigger Animations
-             ================================================================= */
-          
-          // Initial Load Reveal
+          /* Scroll Trigger Animations */
           gsap.to(".page-header", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 0.2 });
 
-          // Reveal Up Elements
           gsap.utils.toArray('.reveal-up').forEach(el => {
               gsap.to(el, {
-                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+                  scrollTrigger: { trigger: el, start: "top 88%" },
                   y: 0, opacity: 1, duration: 1, ease: "power3.out"
               });
           });
 
-          // Reveal Fade Elements
           gsap.utils.toArray('.reveal-fade').forEach(el => {
               gsap.to(el, {
-                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+                  scrollTrigger: { trigger: el, start: "top 88%" },
                   opacity: 1, duration: 1.5, ease: "power2.out"
               });
           });
