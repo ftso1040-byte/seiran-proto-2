@@ -19,17 +19,16 @@
 
     <style>
         /* ==========================================================================
-           1. CSS Variables & Reset (The "Seiran" Blue)
+           1. CSS Variables & Reset
            ========================================================================== */
         :root {
-            --color-bg: #030508; /* 極限まで黒に近い深い藍色 */
-            --color-surface: #06090e; /* 少し明るい藍色（カード等） */
+            --color-bg: #030508;
+            --color-surface: #06090e;
             --color-text: #F5F5F0;
             --color-text-muted: #888888;
-            --color-accent: #C1A063; /* 藍に映える金 */
+            --color-accent: #C1A063;
             --color-border: rgba(255, 255, 255, 0.15);
             
-            /* Fluid Typography */
             --font-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.85rem);
             --font-sm: clamp(0.875rem, 0.8vw + 0.5rem, 1rem);
             --font-base: clamp(1rem, 1vw + 0.5rem, 1.125rem);
@@ -37,7 +36,6 @@
             --font-xl: clamp(2rem, 3vw + 1rem, 3rem);
             --font-xxl: clamp(3rem, 6vw + 1rem, 5rem);
             
-            /* Fluid Spacing */
             --space-xs: clamp(1rem, 2vw, 1.5rem);
             --space-sm: clamp(2rem, 4vw, 3rem);
             --space-md: clamp(4rem, 8vw, 6rem);
@@ -49,9 +47,7 @@
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         html { font-size: 16px; scroll-behavior: auto; }
-
         body {
             background-color: var(--color-bg);
             color: var(--color-text);
@@ -63,20 +59,18 @@
             -webkit-font-smoothing: antialiased;
         }
         body.no-scroll { overflow: hidden; }
-
         a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
         a:hover { color: var(--color-accent); }
         ul { list-style: none; }
         img { max-width: 100%; height: auto; display: block; object-fit: cover; }
-
         .text-serif { font-family: var(--font-serif); }
         .text-accent { color: var(--color-accent); }
 
-        /* Layout Utils */
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-sm); }
-        .container-narrow { max-width: 900px; }
         .section-padding { padding: var(--space-lg) 0; }
         .text-center { text-align: center; }
+        .mgt20 { margin-top: 20px; }
+        .mgt40 { margin-top: 40px; }
 
         /* ==========================================================================
            2. Elegant Button
@@ -108,7 +102,7 @@
         .elegant-btn:hover::before { transform: scaleX(1); transform-origin: left; }
 
         /* ==========================================================================
-           3. Header & Hamburger Navigation
+           3. Header & Hamburger Navigation (Fixed 2 Columns)
            ========================================================================== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
@@ -144,7 +138,8 @@
             visibility: hidden; opacity: 0; transition: visibility 0s 0.5s, opacity 0.5s ease;
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
-        /* 圧倒的に美しい 3x2 のグリッドレイアウトへ改修 */
+        
+        /* 完璧な 3x2 グリッドレイアウト */
         .nav-list { 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -155,20 +150,16 @@
             text-align: center;
         }
         @media (max-width: 768px) {
-            .nav-list {
-                /* スマホ時は縦の隙間を少し絞り、1画面に綺麗に収める */
-                gap: var(--space-sm) var(--space-xs);
-            }
+            .nav-list { gap: var(--space-sm) var(--space-xs); }
         }
 
         .nav-item { overflow: hidden; }
         .nav-link {
             display: block; font-family: var(--font-serif); 
-            /* 見切れ防止とインパクトの両立。PCは大きく、スマホは画面幅に合わせて縮小 */
             font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap; /* テキストの折り返しを防ぎ、美しさを担保 */
+            white-space: nowrap;
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
@@ -186,7 +177,7 @@
         .hero-subtitle { font-size: var(--font-base); letter-spacing: 0.3em; margin-top: 1rem; color: var(--color-accent); text-align: center; }
 
         /* ==========================================================================
-           5. Section Titles & Split Layouts (店舗案内 / こだわり)
+           5. Section Styles
            ========================================================================== */
         .section-header { text-align: center; margin-bottom: var(--space-md); }
         .section-title-en { font-family: var(--font-sans); font-size: var(--font-xs); color: var(--color-accent); letter-spacing: 0.3em; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
@@ -200,15 +191,12 @@
         }
         
         .split-text-box { padding: var(--space-xs) 0; }
-        .split-title { font-size: var(--font-lg); margin-bottom: var(--space-xs); letter-spacing: 0.15em; }
+        .split-title { font-size: var(--font-lg); margin-bottom: var(--space-xs); letter-spacing: 0.15em; line-height: 1.6; }
         .split-desc { font-size: var(--font-base); color: var(--color-text-muted); line-height: 2.2; }
         
         .split-img-wrap { width: 100%; height: 50vh; overflow: hidden; position: relative; transform: translateZ(0); }
         .split-img { position: absolute; top: -10%; left: 0; width: 100%; height: 120%; }
 
-        /* ==========================================================================
-           6. Menu Overview (お品書き)
-           ========================================================================== */
         .menu-section { background-color: var(--color-surface); text-align: center; }
         .menu-text { max-width: 800px; margin: 0 auto var(--space-md); font-size: var(--font-lg); line-height: 2.2; position: relative; z-index: 10; }
         
@@ -217,9 +205,6 @@
         .photo-wrap { width: 100%; height: 40vh; overflow: hidden; position: relative; transform: translateZ(0); }
         .photo-img { position: absolute; top: -10%; left: 0; width: 100%; height: 120%; }
 
-        /* ==========================================================================
-           7. 3 Column Cards (ギャラリー/予約の流れ/FAQ)
-           ========================================================================== */
         .cards-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-sm); }
         @media (min-width: 768px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
         
@@ -231,17 +216,7 @@
         .card-title { font-size: var(--font-lg); text-align: center; margin-bottom: 10px; color: var(--color-accent); }
         .card-text { font-size: var(--font-sm); color: var(--color-text-muted); padding: 0 var(--space-xs); margin-bottom: var(--space-xs); text-align: center; }
 
-        /* ==========================================================================
-           8. News (お知らせ) & Info (店舗情報)
-           ========================================================================== */
-        .news-section { background-color: var(--color-bg); }
-        .news-list { border-top: 1px solid var(--color-border); max-width: 800px; margin: 0 auto; }
-        .news-item { display: flex; flex-direction: column; padding: 20px 0; border-bottom: 1px solid var(--color-border); transition: background-color 0.3s; }
-        @media (min-width: 768px) { .news-item { flex-direction: row; align-items: center; } }
-        .news-item:hover { background-color: rgba(255,255,255,0.02); }
-        .news-date { width: 150px; color: var(--color-accent); font-family: var(--font-serif); }
-        .news-title { flex: 1; }
-
+        /* Info Styles */
         .info-section { background-color: var(--color-surface); }
         .info-table { width: 100%; border-collapse: collapse; margin-top: var(--space-md); }
         .info-table th, .info-table td { padding: 15px 0; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
@@ -251,9 +226,6 @@
             .info-table th { border-bottom: none; padding-bottom: 0; }
         }
 
-        /* ==========================================================================
-           9. Map & Footer
-           ========================================================================== */
         .map-wrap { width: 100%; height: 50vh; background-color: #000; }
         .map-footer-area { background-color: var(--color-bg); padding: var(--space-sm) 0; text-align: center; border-bottom: 1px solid var(--color-border); }
         
@@ -264,7 +236,6 @@
         /* Animation Utilities */
         .reveal-up { opacity: 0; transform: translateY(40px); }
         .reveal-fade { opacity: 0; }
-
     </style>
 </head>
 <body>
@@ -281,7 +252,7 @@
 
   <nav class="nav-overlay" id="nav-overlay">
       <ul class="nav-list">
-          <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+          <!-- HOMEを削除し、完璧な3x2グリッドを実現 -->
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
           <li class="nav-item"><a href="menu.html" class="nav-link">お品書き</a></li>
@@ -290,15 +261,12 @@
           <li class="nav-item"><a href="faq.html" class="nav-link">よくあるご質問</a></li>
       </ul>
   </nav>
-      </ul>
-  </nav>
 
   <main>
       <!-- Hero Section -->
       <section class="hero">
           <div class="hero-bg-wrap">
-              <!-- ▼ 画像差し替え箇所 1：トップのヒーロー画像 -->
-              <img src="スクリーンショット 2026-03-17 200221.png" class="hero-bg" id="hero-bg" alt="[Image of 寿司]">
+              <img src="スクリーンショット 2026-03-17 200221.png" class="hero-bg" id="hero-bg" alt="銀座 聖藍 ヒーロー画像">
           </div>
           <div class="hero-overlay"></div>
           <div style="text-align: center;">
@@ -327,8 +295,7 @@
                       </div>
                   </div>
                   <div class="split-img-wrap reveal-fade">
-                      <!-- ▼ 画像差し替え箇所 2：店舗案内の画像（例：店内の雰囲気、大将の姿など） -->
-                      <img src="スクリーンショット 2026-03-17 205753.png" class="split-img parallax-img" alt="">
+                      <img src="スクリーンショット 2026-03-17 205753.png" class="split-img parallax-img" alt="店舗内観">
                   </div>
               </div>
           </div>
@@ -341,7 +308,6 @@
                   <span class="section-title-en">Concept</span>
                   <h2 class="section-title-ja text-serif">こだわり</h2>
               </div>
-              <!-- リバースレイアウト（PCでは画像が左、テキストが右） -->
               <div class="split-layout reverse">
                   <div class="split-text-box reveal-up">
                       <h3 class="split-title text-serif">厳選して提供しています。</h3>
@@ -355,8 +321,7 @@
                       </div>
                   </div>
                   <div class="split-img-wrap reveal-fade">
-                      <!-- ▼ 画像差し替え箇所 3：こだわりの画像（例：新鮮な魚介、職人の手元など） -->
-                      <img src="スクリーンショット 2026-03-17 200707.png" class="split-img parallax-img" alt="">
+                      <img src="スクリーンショット 2026-03-17 200707.png" class="split-img parallax-img" alt="食材のこだわり">
                   </div>
               </div>
           </div>
@@ -377,12 +342,10 @@
               
               <div class="photo-grid mgt40">
                   <div class="photo-wrap reveal-fade">
-                      <!-- ▼ 画像差し替え箇所 4：お品書き画像 左（例：美しい握り寿司） -->
-                      <img src="スクリーンショット 2026-03-17 205250.png" class="photo-img parallax-img" alt="">
+                      <img src="スクリーンショット 2026-03-17 205250.png" class="photo-img parallax-img" alt="寿司 盛り合わせ">
                   </div>
                   <div class="photo-wrap reveal-fade">
-                      <!-- ▼ 画像差し替え箇所 5：お品書き画像 右（例：日本酒や逸品料理） -->
-                      <img src="スクリーンショット 2026-03-17 200757.png" class="photo-img parallax-img" alt="">
+                      <img src="スクリーンショット 2026-03-17 200757.png" class="photo-img parallax-img" alt="お飲み物">
                   </div>
               </div>
 
@@ -392,35 +355,29 @@
           </div>
       </section>
 
-      <!-- ギャラリー / 予約の流れ / FAQ (3 Columns) -->
+      <!-- 3 Column Cards -->
       <section class="section-padding">
           <div class="container">
               <div class="cards-grid">
-                  <!-- ギャラリー -->
                   <div class="card reveal-up">
                       <div class="card-img-wrap">
-                          <!-- ▼ 画像差し替え箇所 6：ギャラリーカードの画像 -->
-                          <img src="スクリーンショット 2026-03-17 205250.png" alt="">
+                          <img src="スクリーンショット 2026-03-17 205250.png" class="card-img" alt="ギャラリー">
                       </div>
                       <h3 class="card-title text-serif">ギャラリー</h3>
                       <p class="card-text text-serif">店内の様子やお料理のイメージをご用意しました。是非ご覧ください。</p>
                       <div class="text-center mgt20"><a href="gallery.html" class="elegant-btn" style="padding: 10px 20px; font-size: 0.8rem;">詳しくはこちら</a></div>
                   </div>
-                  <!-- ご予約の流れ -->
                   <div class="card reveal-up" style="transition-delay: 0.1s;">
                       <div class="card-img-wrap">
-                          <!-- ▼ 画像差し替え箇所 7：ご予約の流れカードの画像 -->
-                          <img src="Gemini_Generated_Image_e2meq6e2meq6e2me.png" class="card-img" alt="">
+                          <img src="Gemini_Generated_Image_e2meq6e2meq6e2me.png" class="card-img" alt="ご予約の流れ">
                       </div>
                       <h3 class="card-title text-serif">ご予約の流れ</h3>
                       <p class="card-text text-serif">初めてご利用の方へ向けた、ご予約の流れをご案内いたします。</p>
                       <div class="text-center mgt20"><a href="flow.html" class="elegant-btn" style="padding: 10px 20px; font-size: 0.8rem;">詳しくはこちら</a></div>
                   </div>
-                  <!-- よくあるご質問 -->
                   <div class="card reveal-up" style="transition-delay: 0.2s;">
                       <div class="card-img-wrap">
-                          <!-- ▼ 画像差し替え箇所 8：よくあるご質問カードの画像 -->
-                          <img src="スクリーンショット 2026-03-17 200646.png" class="card-img" alt="[Image of FAQ]">
+                          <img src="スクリーンショット 2026-03-17 200646.png" class="card-img" alt="よくあるご質問">
                       </div>
                       <h3 class="card-title text-serif">よくあるご質問</h3>
                       <p class="card-text text-serif">よくいただくご質問やご相談内容をまとめました。ご確認ください。</p>
@@ -430,29 +387,9 @@
           </div>
       </section>
 
-      <!-- お知らせ -->
-      <section class="news-section section-padding">
-          <div class="container container-narrow">
-              <div class="section-header reveal-up">
-                  <span class="section-title-en">News</span>
-                  <h2 class="section-title-ja text-serif">お知らせ</h2>
-              </div>
-              <div class="news-list reveal-up">
-                  <a href="news.html" class="news-item">
-                      <div class="news-date">2023.10.01</div>
-                      <div class="news-title">銀座 聖藍のホームページを新しくオープンしました。</div>
-                  </a>
-                  <!-- 記事が増えた場合はここに追加 -->
-              </div>
-              <div class="text-center mgt40 reveal-up">
-                  <a href="news.html" class="elegant-btn">一覧を見る</a>
-              </div>
-          </div>
-      </section>
-
-      <!-- 店舗情報・お問い合わせ -->
+      <!-- 店舗情報 -->
       <section id="info" class="info-section section-padding">
-          <div class="container container-narrow">
+          <div class="container">
               <div class="section-header reveal-up">
                   <span class="section-title-en">Information</span>
                   <h2 class="section-title-ja text-serif">店舗情報</h2>
@@ -476,7 +413,7 @@
           </div>
       </section>
 
-      <!-- Map & Route Button -->
+      <!-- Map -->
       <section class="map-section">
           <div class="map-wrap reveal-fade">
               <iframe 
@@ -491,7 +428,6 @@
               </a>
           </div>
       </section>
-
   </main>
 
   <!-- Footer -->
@@ -508,34 +444,24 @@
               <li><a href="policy.html">プライバシーポリシー</a></li>
           </ul>
           <p class="text-serif" style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">銀座 聖藍</p>
-          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.<br>【掲載の記事・写真・イラストなどの無断複写・転載を禁じます】</p>
+          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.</p>
       </div>
   </footer>
 
-  <!-- Scripts -->
   <script>
       document.addEventListener("DOMContentLoaded", () => {
           gsap.registerPlugin(ScrollTrigger);
 
-          /* =================================================================
-             1. Initial Animation & Header
-             ================================================================= */
           gsap.to("#hero-title, .hero-subtitle", {
               opacity: 1, y: 0, duration: 1.5, stagger: 0.3, ease: "power3.out", delay: 0.5
           });
 
           const header = document.getElementById('header');
           window.addEventListener('scroll', () => {
-              if (window.scrollY > 50) {
-                  header.classList.add('scrolled');
-              } else {
-                  header.classList.remove('scrolled');
-              }
+              if (window.scrollY > 50) header.classList.add('scrolled');
+              else header.classList.remove('scrolled');
           });
 
-          /* =================================================================
-             2. Hamburger Menu Logic
-             ================================================================= */
           const menuBtn = document.getElementById('menu-btn');
           const navOverlay = document.getElementById('nav-overlay');
           const navLinks = document.querySelectorAll('.nav-link');
@@ -551,17 +477,11 @@
           menuBtn.addEventListener('click', toggleMenu);
           navLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
-          /* =================================================================
-             3. ScrollTrigger Animations
-             ================================================================= */
-          
-          // Hero Image Parallax
           gsap.to("#hero-bg", {
               yPercent: 15, ease: "none",
               scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
           });
 
-          // Reveal Up Elements
           gsap.utils.toArray('.reveal-up').forEach(el => {
               gsap.to(el, {
                   scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
@@ -569,7 +489,6 @@
               });
           });
 
-          // Reveal Fade Elements
           gsap.utils.toArray('.reveal-fade').forEach(el => {
               gsap.to(el, {
                   scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
@@ -577,7 +496,6 @@
               });
           });
 
-          // Parallax Images in Wrap
           gsap.utils.toArray('.parallax-img').forEach(img => {
               gsap.fromTo(img, 
                   { yPercent: -5 },
