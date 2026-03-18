@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>ご予約の流れ | 銀座 聖藍｜東京都中央区銀座にある寿司店</title>
+    <meta name="description" content="銀座 聖藍を初めてご利用の方へ向けた、ご予約の流れをご案内いたします。ご予約はWebまたはお電話にて承っております。">
+    <meta name="keywords" content="東京都,中央区,銀座,寿司,鮨,完全予約制,ご予約の流れ,銀座 聖藍">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. CSS Variables & Reset (The "Seiran" Blue)
+           ========================================================================== */
+        :root {
+            --color-bg: #030508;
+            --color-surface: #06090e;
+            --color-text: #F5F5F0;
+            --color-text-muted: #888888;
+            --color-accent: #C1A063;
+            --color-border: rgba(255, 255, 255, 0.15);
+            
+            --font-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.85rem);
+            --font-sm: clamp(0.875rem, 0.8vw + 0.5rem, 1rem);
+            --font-base: clamp(1rem, 1vw + 0.5rem, 1.125rem);
+            --font-lg: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
+            --font-xl: clamp(2rem, 3vw + 1rem, 3rem);
+            
+            --space-xs: clamp(1rem, 2vw, 1.5rem);
+            --space-sm: clamp(2rem, 4vw, 3rem);
+            --space-md: clamp(4rem, 8vw, 6rem);
+            --space-lg: clamp(6rem, 12vw, 10rem);
+
+            --font-serif: 'Shippori Mincho', serif;
+            --font-sans: 'Noto Sans JP', sans-serif;
+            --header-height: 80px;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { font-size: 16px; scroll-behavior: auto; }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-sans);
+            font-size: var(--font-base);
+            line-height: 2;
+            letter-spacing: 0.1em;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        body.no-scroll { overflow: hidden; }
+
+        a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--color-accent); }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; object-fit: cover; }
+
+        .text-serif { font-family: var(--font-serif); }
+        .text-accent { color: var(--color-accent); }
+
+        /* Layout Utils */
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-sm); }
+        .container-narrow { max-width: 900px; }
+        .section-padding { padding: var(--space-md) 0; }
+        .text-center { text-align: center; }
+        .mgt20 { margin-top: 20px; }
+        .mgt40 { margin-top: 40px; }
+        .pc-only { display: none; }
+        @media (min-width: 768px) { .pc-only { display: block; } }
+
+        /* ==========================================================================
+           2. Elegant Button
+           ========================================================================== */
+        .elegant-btn {
+            position: relative; display: inline-flex; align-items: center; justify-content: center;
+            padding: 15px 40px; border: 1px solid var(--color-border); color: var(--color-text);
+            font-family: var(--font-serif); font-size: var(--font-sm); letter-spacing: 0.15em;
+            overflow: hidden; transition: color 0.4s ease, border-color 0.4s ease; background: transparent; cursor: pointer;
+        }
+        .elegant-btn::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--color-accent); transform: scaleX(0); transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index: -1;
+        }
+        .elegant-btn:hover { border-color: var(--color-accent); color: var(--color-bg); }
+        .elegant-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+
+        /* ==========================================================================
+           3. Header & Navigation
+           ========================================================================== */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 var(--space-sm); z-index: 1000;
+            background-color: rgba(3, 5, 8, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-border);
+        }
+        .header-logo { font-family: var(--font-serif); font-size: var(--font-lg); letter-spacing: 0.15em; }
+
+        .menu-btn { position: relative; width: 40px; height: 40px; cursor: pointer; z-index: 1001; background: none; border: none; }
+        .menu-btn-line { position: absolute; left: 5px; width: 30px; height: 1px; background-color: var(--color-text); transition: transform 0.4s ease, opacity 0.4s ease; }
+        .menu-btn-line:nth-child(1) { top: 12px; } .menu-btn-line:nth-child(2) { top: 20px; } .menu-btn-line:nth-child(3) { top: 28px; }
+        .menu-btn.active .menu-btn-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-btn.active .menu-btn-line:nth-child(2) { opacity: 0; }
+        .menu-btn.active .menu-btn-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: rgba(3, 5, 8, 0.98); z-index: 999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            visibility: hidden; opacity: 0; transition: visibility 0s 0.5s, opacity 0.5s ease;
+        }
+        .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
+        .nav-list { text-align: center; } .nav-item { margin: var(--space-xs) 0; overflow: hidden; }
+        .nav-link { display: block; font-family: var(--font-serif); font-size: var(--font-xl); letter-spacing: 0.1em; transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease; }
+        .nav-overlay.active .nav-link { transform: translateY(0); }
+
+        /* ==========================================================================
+           4. Page Header & Breadcrumb
+           ========================================================================== */
+        .page-header { margin-top: var(--header-height); padding: var(--space-md) 0 var(--space-sm); text-align: center; }
+        .page-title { font-size: var(--font-xl); letter-spacing: 0.2em; margin-bottom: var(--space-xs); }
+        .breadcrumb { display: flex; justify-content: center; font-size: var(--font-xs); color: var(--color-text-muted); letter-spacing: 0.1em; }
+        .breadcrumb li { display: flex; align-items: center; }
+        .breadcrumb li:not(:last-child)::after { content: '>'; margin: 0 10px; color: var(--color-border); }
+
+        /* ==========================================================================
+           5. Flow Section Styles
+           ========================================================================== */
+        .flow-lead-img {
+            width: 100%;
+            height: 40vh;
+            object-fit: cover;
+            margin-bottom: var(--space-md);
+            opacity: 0.9;
+        }
+        @media (min-width: 768px) {
+            .flow-lead-img { height: 50vh; }
+        }
+
+        .flow-intro {
+            font-size: var(--font-lg);
+            line-height: 2.2;
+            text-align: center;
+            margin-bottom: var(--space-md);
+        }
+
+        /* 海外向けボタンのグリッド */
+        .lang-btn-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            max-width: 800px;
+            margin: var(--space-sm) auto var(--space-md);
+        }
+        @media(min-width: 576px) {
+            .lang-btn-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media(min-width: 992px) {
+            .lang-btn-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+        }
+        .lang-btn {
+            display: block;
+            text-align: center;
+            padding: 15px 10px;
+            background-color: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            transition: all 0.3s ease;
+            font-size: var(--font-sm);
+        }
+        .lang-btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        /* ステップのレイアウト */
+        .step-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .step-item:hover {
+            transform: translateX(10px);
+        }
+        @media(min-width: 768px) {
+            .step-item {
+                flex-direction: row;
+                align-items: stretch;
+            }
+        }
+        .step-header {
+            background-color: var(--color-accent);
+            padding: var(--space-sm);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        @media(min-width: 768px) {
+            .step-header {
+                flex: 0 0 160px;
+            }
+        }
+        .step-number {
+            font-size: 3rem;
+            color: var(--color-bg);
+            line-height: 1;
+            font-family: var(--font-serif);
+            font-weight: 600;
+            text-align: center;
+        }
+        .step-number small {
+            font-size: 1rem;
+            display: block;
+            letter-spacing: 0.1em;
+            color: var(--color-bg);
+            margin-bottom: 5px;
+        }
+        .step-content {
+            flex: 1;
+            padding: var(--space-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .step-title {
+            font-size: var(--font-xl);
+            margin-bottom: var(--space-xs);
+            color: var(--color-text);
+        }
+        .step-desc {
+            color: var(--color-text-muted);
+            line-height: 2;
+            font-size: var(--font-base);
+        }
+
+        /* 矢印のデザイン */
+        .step-arrow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: var(--space-sm) 0;
+        }
+        .step-arrow::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid var(--color-accent); /* 金色の下向き三角形 */
+            animation: bounceDown 2s infinite;
+        }
+        @keyframes bounceDown {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-7px); }
+        }
+
+        /* ==========================================================================
+           6. Contact Parallax (共通)
+           ========================================================================== */
+        .contact_info_02 { position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop'); }
+        .contact_info_02::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.85); }
+        .contact_info_02_inner { position: relative; z-index: 1; padding: var(--space-lg) 0; text-align: center; }
+        .contact-title { font-size: var(--font-xl); margin-bottom: 10px; }
+        .contact-subtitle { font-size: var(--font-sm); color: var(--color-text-muted); font-family: var(--font-sans); letter-spacing: 0.2em; }
+        .tel-number { font-size: 2.5rem; color: var(--color-accent); display: block; margin: var(--space-xs) 0; }
+
+        /* ==========================================================================
+           7. Footer (共通)
+           ========================================================================== */
+        footer { padding: var(--space-md) 0; text-align: center; font-size: var(--font-xs); color: var(--color-text-muted); border-top: 1px solid var(--color-border); }
+        .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+        .copyright { margin-top: 20px; letter-spacing: 0.1em; }
+
+        /* Animation Utilities */
+        .reveal-up { opacity: 0; transform: translateY(40px); }
+        .reveal-fade { opacity: 0; }
+    </style>
+</head>
+<body>
+
+  <!-- Header & Nav -->
+  <header id="header">
+      <a href="index.html" class="header-logo">銀座 聖藍</a>
+      <button class="menu-btn" id="menu-btn" aria-label="Menu">
+          <span class="menu-btn-line"></span>
+          <span class="menu-btn-line"></span>
+          <span class="menu-btn-line"></span>
+      </button>
+  </header>
+
+  <nav class="nav-overlay" id="nav-overlay">
+      <ul class="nav-list">
+          <li class="nav-item"><a href="index.html" class="nav-link">HOME</a></li>
+          <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
+          <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
+          <li class="nav-item"><a href="menu.html" class="nav-link">お品書き</a></li>
+          <li class="nav-item"><a href="info.html" class="nav-link">店舗情報</a></li>
+      </ul>
+  </nav>
+
+  <main>
+      <!-- Page Header & Breadcrumb -->
+      <div class="page-header reveal-fade">
+          <h1 class="page-title text-serif">ご予約の流れ</h1>
+          <ul class="breadcrumb">
+              <li><a href="index.html">HOME</a></li>
+              <li>ご予約の流れ</li>
+          </ul>
+      </div>
+
+      <section class="section-padding" style="padding-top: 0;">
+          <div class="container container-narrow">
+              
+              <figure class="reveal-fade">
+                  <!-- ▼ 画像差し替え箇所 1：ご予約の流れページのメイン画像 -->
+                  <img src="" alt="ご予約の流れ" class="flow-lead-img" />
+              </figure>
+
+              <p class="flow-intro text-serif reveal-up">
+                  当店を初めてご利用の方へ向けた、ご予約からご来店までの流れをご案内いたします。<br class="pc-only">
+                  ご予約はWeb、またはお電話にて承っております。
+              </p>
+
+              <!-- 海外向けボタンセクション -->
+              <div class="mgt40 reveal-up">
+                  <p class="text-center text-serif" style="color: var(--color-accent); letter-spacing: 0.1em;">
+                      To Guests from Overseas / 海外のお客様へ
+                  </p>
+                  <div class="lang-btn-grid">
+                      <a href="https://mycon-jp.net/reservation/ginza-fukasawa/en" target="_blank" rel="noopener" class="lang-btn">Reservation in English</a>
+                      <a href="https://mycon-jp.net/reservation/ginza-fukasawa/zh-TW" target="_blank" rel="noopener" class="lang-btn">繁體中文預約</a>
+                      <a href="https://mycon-jp.net/reservation/ginza-fukasawa/zh-CN" target="_blank" rel="noopener" class="lang-btn">简体中文预约</a>
+                      <a href="https://mycon-jp.net/reservation/ginza-fukasawa/ko" target="_blank" rel="noopener" class="lang-btn">한국어 예약</a>
+                  </div>
+              </div>
+
+              <!-- ステップセクション -->
+              <div class="step-container mgt40">
+                  
+                  <div class="step-item reveal-up">
+                      <div class="step-header">
+                          <p class="step-number"><small>STEP</small>01</p>
+                      </div>
+                      <div class="step-content">
+                          <h2 class="step-title text-serif">ご予約</h2>
+                          <p class="step-desc text-serif">
+                              ご予約はWeb予約、またはお電話にて承ります。<br>
+                              ご希望の日時、ご利用人数、ご利用のコース（昼・夜）をお知らせください。<br>
+                              完全個室（蘭・朝顔）をご希望の場合は、ご予約時にお申し出ください。<br><br>
+                              ※キャンセルや変更につきましては、店舗案内の「キャンセルポリシー」をご確認ください。
+                          </p>
+                      </div>
+                  </div>
+
+                  <!-- 追加された矢印 -->
+                  <div class="step-arrow reveal-up"></div>
+
+                  <div class="step-item reveal-up">
+                      <div class="step-header">
+                          <p class="step-number"><small>STEP</small>02</p>
+                      </div>
+                      <div class="step-content">
+                          <h2 class="step-title text-serif">ご来店</h2>
+                          <p class="step-desc text-serif">
+                              お食事は月替わりのおまかせコースとなります。<br>
+                              こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br><br>
+                              ※駐車場のご用意はございません。お車でお越しの方は近隣のコインパーキングをご利用ください。
+                          </p>
+                      </div>
+                  </div>
+
+                  <!-- 追加された矢印 -->
+                  <div class="step-arrow reveal-up"></div>
+
+                  <div class="step-item reveal-up">
+                      <div class="step-header">
+                          <p class="step-number"><small>STEP</small>03</p>
+                      </div>
+                      <div class="step-content">
+                          <h2 class="step-title text-serif">お会計</h2>
+                          <p class="step-desc text-serif">
+                              お会計はご自身のお席にて承ります。<br>
+                              現金のほか、各種クレジットカード、およびQRコード決済（d払い）がご利用いただけます。
+                          </p>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </section>
+
+      <!-- Contact Info Parallax -->
+      <section class="contact_info_02">
+          <div class="contact_info_02_inner reveal-fade">
+              <div class="container container-narrow">
+                  <h2 class="contact-title text-serif">お問い合わせ</h2>
+                  <span class="contact-subtitle">銀座 聖藍</span>
+                  
+                  <p class="text-serif mgt40" style="line-height: 2.2;">
+                      銀座 聖藍は、東京都中央区銀座にある完全予約制の寿司店です。<br class="pc-only">
+                      こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br class="pc-only">
+                      お席はカウンター席・完全個室をご用意しております。<br class="pc-only">
+                      当店へのご予約・お問い合わせはお電話にて承っております。
+                  </p>
+                  
+                  <div class="mgt40">
+                      <span class="text-serif" style="font-size: 0.9rem; color: var(--color-text-muted);">TEL</span>
+                      <a href="tel:03-3572-6555" class="tel-number text-serif">03-3572-6555</a>
+                  </div>
+                  
+                  <div class="mgt40">
+                      <a href="#" class="elegant-btn" style="background-color: var(--color-accent); color: #000;">Webからのご予約はこちら</a>
+                  </div>
+                  
+                  <p class="text-serif mgt40" style="font-size: 0.9rem; color: var(--color-text-muted);">
+                      東京都中央区銀座6-9-14 方圓ビル 2F<br>
+                      11:30～14:00 / 17:00～22:00<br>
+                      [定休日]<br>水曜日・日曜日<br>
+                  </p>
+              </div>
+          </div>
+      </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+      <div class="container">
+          <ul class="footer-nav text-serif">
+              <li><a href="index.html">HOME</a></li>
+              <li><a href="about.html">店舗案内</a></li>
+              <li><a href="concept.html">こだわり</a></li>
+              <li><a href="menu.html">お品書き</a></li>
+              <li><a href="gallery.html">ギャラリー</a></li>
+              <li><a href="flow.html">ご予約の流れ</a></li>
+              <li><a href="faq.html">よくあるご質問</a></li>
+              <li><a href="policy.html">プライバシーポリシー</a></li>
+          </ul>
+          <p class="text-serif" style="font-size: 1.2rem; margin-bottom: 10px; color: #fff;">銀座 聖藍</p>
+          <p class="copyright">&copy; Ginza Seiran All Rights Reserved.<br>【掲載の記事・写真・イラストなどの無断複写・転載を禁じます】</p>
+      </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          gsap.registerPlugin(ScrollTrigger);
+
+          /* =================================================================
+             1. Hamburger Menu Logic
+             ================================================================= */
+          const menuBtn = document.getElementById('menu-btn');
+          const navOverlay = document.getElementById('nav-overlay');
+          const navLinks = document.querySelectorAll('.nav-link');
+          let isMenuOpen = false;
+
+          const toggleMenu = () => {
+              isMenuOpen = !isMenuOpen;
+              menuBtn.classList.toggle('active');
+              navOverlay.classList.toggle('active');
+              document.body.classList.toggle('no-scroll', isMenuOpen);
+          };
+
+          menuBtn.addEventListener('click', toggleMenu);
+          navLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+          /* =================================================================
+             2. ScrollTrigger Animations
+             ================================================================= */
+          
+          // Initial Load Reveal
+          gsap.to(".page-header", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 0.2 });
+
+          // Reveal Up Elements
+          gsap.utils.toArray('.reveal-up').forEach(el => {
+              gsap.to(el, {
+                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+                  y: 0, opacity: 1, duration: 1, ease: "power3.out"
+              });
+          });
+
+          // Reveal Fade Elements
+          gsap.utils.toArray('.reveal-fade').forEach(el => {
+              gsap.to(el, {
+                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
+                  opacity: 1, duration: 1.5, ease: "power2.out"
+              });
+          });
+      });
+  </script>
+</body>
+</html>
