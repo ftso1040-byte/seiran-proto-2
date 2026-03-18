@@ -120,7 +120,7 @@
             visibility: hidden; opacity: 0; transition: visibility 0s 0.5s, opacity 0.5s ease;
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
-       /* 圧倒的に美しい 3x2 のグリッドレイアウトへ改修 */
+       
         .nav-list { 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -132,7 +132,6 @@
         }
         @media (max-width: 768px) {
             .nav-list {
-                /* スマホ時は縦の隙間を少し絞り、1画面に綺麗に収める */
                 gap: var(--space-sm) var(--space-xs);
             }
         }
@@ -140,11 +139,10 @@
         .nav-item { overflow: hidden; }
         .nav-link {
             display: block; font-family: var(--font-serif); 
-            /* 見切れ防止とインパクトの両立。PCは大きく、スマホは画面幅に合わせて縮小 */
             font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap; /* テキストの折り返しを防ぎ、美しさを担保 */
+            white-space: nowrap;
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
@@ -190,12 +188,10 @@
             border-top: 1px solid var(--color-border);
         }
 
-        /* チェックボックスを隠す */
         .accordion-checkbox {
             display: none;
         }
 
-        /* 質問部分（クリッカブル） */
         .accordion-trigger {
             display: flex;
             justify-content: space-between;
@@ -215,7 +211,6 @@
             color: var(--color-accent);
         }
 
-        /* 開閉アイコン (+) */
         .accordion-trigger::after {
             content: '+';
             font-family: var(--font-sans);
@@ -226,12 +221,10 @@
             transition: transform 0.4s ease;
         }
 
-        /* チェックされたらアイコンを(x)にする */
         .accordion-checkbox:checked + .accordion-trigger::after {
             transform: rotate(45deg);
         }
 
-        /* 回答部分（初期状態は隠す） */
         .accordion-target {
             max-height: 0;
             overflow: hidden;
@@ -239,9 +232,8 @@
             padding: 0;
         }
 
-        /* チェックされたら回答部分を展開 */
         .accordion-checkbox:checked ~ .accordion-target {
-            max-height: 600px; /* 十分な高さに設定 */
+            max-height: 600px;
             padding: 0 0 25px 0;
         }
 
@@ -255,7 +247,6 @@
             .accordion-target p { font-size: var(--font-base); }
         }
 
-        /* リンクの装飾 */
         .accordion-target a {
             color: var(--color-accent);
             text-decoration: underline;
@@ -269,7 +260,14 @@
         /* ==========================================================================
            6. Contact Parallax (共通)
            ========================================================================== */
-        .contact_info_02 { position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop'); }
+        .contact_info_02 { 
+            position: relative; 
+            background-attachment: fixed; 
+            background-position: center; 
+            background-size: cover; 
+            /* ▼ 画像差し替え箇所 2：下部お問い合わせセクションの背景画像（パララックス効果） */
+            background-image: url('スクリーンショット 2026-03-17 200221.png'); 
+        }
         .contact_info_02::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.85); }
         .contact_info_02_inner { position: relative; z-index: 1; padding: var(--space-lg) 0; text-align: center; }
         .contact-title { font-size: var(--font-xl); margin-bottom: 10px; }
@@ -301,7 +299,6 @@
   </header>
 
   <nav class="nav-overlay" id="nav-overlay">
-      <!-- HOMEを外し、完璧な3x2グリッドを実現 -->
       <ul class="nav-list">
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
@@ -326,7 +323,7 @@
           <div class="container container-narrow">
               
               <figure class="reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 1：FAQページのメイン画像 -->
+                  <!-- ▼ 画像差し替え箇所 1：FAQページのメインイメージ画像（例：店内の雰囲気、白木のカウンター、またはおもてなしの風景） -->
                   <img src="" alt="よくあるご質問" class="faq-lead-img" />
               </figure>
 
@@ -495,10 +492,8 @@
              2. ScrollTrigger Animations
              ================================================================= */
           
-          // Initial Load Reveal
           gsap.to(".page-header", { opacity: 1, duration: 1.5, ease: "power2.out", delay: 0.2 });
 
-          // Reveal Up Elements
           gsap.utils.toArray('.reveal-up').forEach(el => {
               gsap.to(el, {
                   scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
@@ -506,7 +501,6 @@
               });
           });
 
-          // Reveal Fade Elements
           gsap.utils.toArray('.reveal-fade').forEach(el => {
               gsap.to(el, {
                   scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" },
