@@ -78,6 +78,8 @@
         .text-center { text-align: center; }
         .mgt20 { margin-top: 20px; }
         .mgt40 { margin-top: 40px; }
+        .pc-only { display: none; }
+        @media (min-width: 768px) { .pc-only { display: block; } }
 
         /* ==========================================================================
            2. Elegant Button (共通)
@@ -348,7 +350,7 @@
           </div>
       </section>
 
-      <!-- Basic Info Table (一休.comのデータを反映) -->
+      <!-- Basic Info Table -->
       <section class="info-section">
           <div class="container container-narrow">
               <h2 class="section-title-ja text-serif reveal-up">基本情報</h2>
@@ -358,10 +360,6 @@
                       <tr>
                           <th>店舗名</th>
                           <td>銀座 聖藍（ギンザ セイラン）</td>
-                      </tr>
-                      <tr>
-                          <th>料理長</th>
-                          <td>八田 克彦</td>
                       </tr>
                       <tr>
                           <th>所在地</th>
@@ -379,13 +377,6 @@
                           </td>
                       </tr>
                       <tr>
-                          <th>定休日</th>
-                          <td>
-                              水曜日、日曜日
-                              <span class="info-note">※営業時間、定休日は変更となる場合がございます。</span>
-                          </td>
-                      </tr>
-                      <tr>
                           <th>座席数</th>
                           <td>20席（カウンター席、完全個室2室）</td>
                       </tr>
@@ -399,16 +390,8 @@
                           </td>
                       </tr>
                       <tr>
-                          <th>サービス料</th>
-                          <td>10％</td>
-                      </tr>
-                      <tr>
                           <th>禁煙・喫煙</th>
                           <td>全席禁煙</td>
-                      </tr>
-                      <tr>
-                          <th>ドレスコード</th>
-                          <td>スマートカジュアル</td>
                       </tr>
                       <tr>
                           <th>お支払い</th>
@@ -487,7 +470,6 @@
                   <p class="text-serif mgt40" style="font-size: 0.9rem; color: var(--color-text-muted);">
                       東京都中央区銀座6-9-14 方圓ビル 2F<br>
                       11:30～14:00 / 17:00～22:00<br>
-                      [定休日]<br>水曜日・日曜日<br>
                   </p>
               </div>
           </div>
