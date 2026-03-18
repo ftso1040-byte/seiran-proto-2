@@ -54,8 +54,8 @@
             color: var(--color-text);
             font-family: var(--font-sans);
             font-size: var(--font-base);
-            line-height: 2;
-            letter-spacing: 0.1em;
+            line-height: 2.4; /* 可読性と美しさを両立する広めの行間 */
+            letter-spacing: 0.12em;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
@@ -69,6 +69,12 @@
         .text-serif { font-family: var(--font-serif); }
         .text-accent { color: var(--color-accent); }
 
+        /* 「文字の泣き」を防ぐための魔法のクラス */
+        .text-unit {
+            display: inline-block;
+            vertical-align: top;
+        }
+
         /* Layout Utils */
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-sm); }
         .container-narrow { max-width: 900px; }
@@ -76,6 +82,10 @@
         .text-center { text-align: center; }
         .mgt20 { margin-top: 20px; }
         .mgt40 { margin-top: 40px; }
+
+        /* PC/SPでの表示切り替え用 */
+        .pc-only { display: none; }
+        @media (min-width: 768px) { .pc-only { display: block; } }
 
         /* ==========================================================================
            2. Elegant Button
@@ -119,7 +129,6 @@
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
         
-        /* 圧倒的に美しい 3x2 のグリッドレイアウトへ改修 */
         .nav-list { 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -131,7 +140,6 @@
         }
         @media (max-width: 768px) {
             .nav-list {
-                /* スマホ時は縦の隙間を少し絞り、1画面に綺麗に収める */
                 gap: var(--space-sm) var(--space-xs);
             }
         }
@@ -139,11 +147,10 @@
         .nav-item { overflow: hidden; }
         .nav-link {
             display: block; font-family: var(--font-serif); 
-            /* 見切れ防止とインパクトの両立。PCは大きく、スマホは画面幅に合わせて縮小 */
             font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap; /* テキストの折り返しを防ぎ、美しさを担保 */
+            white-space: nowrap;
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
@@ -161,9 +168,8 @@
            ========================================================================== */
         .menu-intro-text {
             font-size: var(--font-lg);
-            line-height: 2.2;
             text-align: center;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto var(--space-md);
         }
 
@@ -220,8 +226,8 @@
             font-size: var(--font-base);
             text-align: center;
             color: var(--color-text-muted);
-            line-height: 2;
-            max-width: 700px;
+            line-height: 2.2;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -241,7 +247,7 @@
         .drink-price { font-size: var(--font-base); color: var(--color-text-muted); }
 
         /* ==========================================================================
-           6. Contact Parallax (共通)
+           6. Contact Parallax
            ========================================================================== */
         .contact_info_02 { position: relative; background-attachment: fixed; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1542314831-c6a4d27ce66f?q=80&w=2000&auto=format&fit=crop'); }
         .contact_info_02::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(3, 5, 8, 0.85); }
@@ -251,7 +257,7 @@
         .tel-number { font-size: 2.5rem; color: var(--color-accent); display: block; margin: var(--space-xs) 0; }
 
         /* ==========================================================================
-           7. Footer (共通)
+           7. Footer
            ========================================================================== */
         footer { padding: var(--space-md) 0; text-align: center; font-size: var(--font-xs); color: var(--color-text-muted); border-top: 1px solid var(--color-border); }
         .footer-nav { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
@@ -299,14 +305,13 @@
       <section class="section-padding">
           <div class="container container-narrow">
               <p class="menu-intro-text text-serif reveal-up">
-                  お品書きは、その日の最高の仕入れで決まる<br class="pc-only">
-                  月替わりのおまかせコースをご用意しております。<br>
-                  お昼、夜ともに四季の彩りを映し出す旬の魚介と、<br class="pc-only">
-                  こだわりのシャリを用いた江戸前寿司をお楽しみください。
+                  <span class="text-unit">お品書きは、</span><span class="text-unit">その日の最高の仕入れで決まる</span><br>
+                  <span class="text-unit">月替わりのおまかせコースを</span><span class="text-unit">ご用意しております。</span><br>
+                  <span class="text-unit">昼、夜ともに</span><span class="text-unit">四季の彩りを映し出す旬の魚介と、</span><br>
+                  <span class="text-unit">こだわりのシャリを用いた</span><span class="text-unit">江戸前寿司をお楽しみください。</span>
               </p>
                             
               <figure class="menu-img-wrap reveal-fade">
-                  <!-- ▼ 画像差し替え箇所 1：お品書きトップのイメージ画像（例：寿司の盛り合わせや握りのアップ） -->
                   <img src="スクリーンショット 2026-03-17 205250.png" alt="おまかせコース" class="menu-img" />
               </figure>
           </div>
@@ -319,13 +324,15 @@
               <!-- お飲み物 -->
               <div class="menu-item reveal-up">
                   <figure class="menu-img-wrap" style="height: 30vh; margin-top: var(--space-md);">
-                      <!-- ▼ 画像差し替え箇所 2：お飲み物のイメージ画像（例：日本酒とお猪口など） -->
                       <img src="スクリーンショット 2026-03-17 200757.png" alt="お飲み物" class="menu-img" />
                   </figure>
                   <h2 class="menu-item-title text-serif">お飲み物</h2>
                   <p class="menu-item-desc text-serif" style="margin-bottom: var(--space-sm);">
-                      お寿司の繊細な味わいを引き立てる、全国各地の銘酒（日本酒・焼酎）を厳選してご用意しております。<br>
-                      メニューにない隠し酒もございますので、料理長にお声がけください。
+                      <span class="text-unit">お寿司の繊細な味わいを</span><span class="text-unit">引き立てる、</span><br class="pc-only">
+                      <span class="text-unit">全国各地の銘酒（日本酒・焼酎）を</span><br>
+                      <span class="text-unit">厳選してご用意しております。</span><br><br>
+                      <span class="text-unit">メニューにない隠し酒も</span><span class="text-unit">ございますので、</span><br>
+                      <span class="text-unit">料理長にお声がけください。</span>
                   </p>
                   
                   <ul class="drink-list text-serif">
@@ -359,10 +366,14 @@
                   <span class="contact-subtitle">銀座 聖藍</span>
                   
                   <p class="text-serif mgt40" style="line-height: 2.2;">
-                      銀座 聖藍は、東京都中央区銀座にある完全予約制の寿司店です。<br class="pc-only">
-                      こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br class="pc-only">
-                      お席はカウンター席・完全個室をご用意しております。<br class="pc-only">
-                      当店へのご予約・お問い合わせはお電話にて承っております。
+                      <span class="text-unit">銀座 聖藍は、</span><span class="text-unit">東京都中央区銀座にある</span><br>
+                      <span class="text-unit">完全予約制の寿司店です。</span><br>
+                      <span class="text-unit">こだわりの食材と、</span><span class="text-unit">磨き抜かれた匠の技を</span><br>
+                      <span class="text-unit">ご堪能ください。</span><br>
+                      <span class="text-unit">お席はカウンター席・個室を</span><br>
+                      <span class="text-unit">ご用意しております。</span><br>
+                      <span class="text-unit">当店へのご予約・お問い合わせは</span><br>
+                      <span class="text-unit">お電話にて承っております。</span>
                   </p>
                   
                   <div class="mgt40">
