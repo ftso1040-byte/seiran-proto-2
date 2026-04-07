@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>銀座 聖藍｜東京都中央区銀座にある寿司店</title>
-    <meta name="description" content="東京都中央区銀座にある寿司店「銀座 聖藍」です。選び抜いたこだわりの食材と、磨き抜かれた職人技で、極上のひとときをお過ごしください。">
+    <meta name="description" content="東京都中央区銀座にある寿司店「銀座 聖藍」です。選び抜いたこだわりの食材と、磨き抜かれた職人技で、極上のひとときをお過ごしください.">
     <meta name="keywords" content="東京都,中央区,銀座,寿司,鮨,お昼,夜,銀座 聖藍">
 
     <!-- Google Fonts -->
@@ -27,7 +27,7 @@
             --color-text: #F5F5F0;
             --color-text-muted: #888888;
             --color-accent: #C1A063;
-            --color-border: rgba(255, 255, 255, 0.15);
+            --color-border: rgba(255, 255, 255, 0.12);
             
             --font-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.85rem);
             --font-sm: clamp(0.875rem, 0.8vw + 0.5rem, 1rem);
@@ -63,6 +63,9 @@
         a:hover { color: var(--color-accent); }
         ul { list-style: none; }
         img { max-width: 100%; height: auto; display: block; object-fit: cover; }
+        
+        /* 文字の泣き防止 */
+        .text-unit { display: inline-block; white-space: nowrap; vertical-align: top; }
         .text-serif { font-family: var(--font-serif); }
         .text-accent { color: var(--color-accent); }
 
@@ -90,6 +93,7 @@
             transition: color 0.4s ease, border-color 0.4s ease;
             background: transparent;
             cursor: pointer;
+            z-index: 1;
         }
         .elegant-btn::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -102,7 +106,60 @@
         .elegant-btn:hover::before { transform: scaleX(1); transform-origin: left; }
 
         /* ==========================================================================
-           3. Header & Hamburger Navigation (Fixed 2 Columns)
+           3. Reservation Drawer (Clean Version)
+           ========================================================================== */
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        .drawer-overlay.active { visibility: visible; opacity: 1; }
+
+        .res-drawer {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 480px; height: 100%;
+            background-color: var(--color-surface);
+            z-index: 2001;
+            padding: 80px 45px;
+            overflow-y: auto;
+            box-shadow: -15px 0 45px rgba(0,0,0,0.6);
+            transition: right 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .res-drawer.active { right: 0; }
+
+        .drawer-close {
+            position: absolute; top: 25px; right: 25px; width: 44px; height: 44px;
+            background: none; border: none; cursor: pointer; color: var(--color-text);
+            transition: transform 0.3s ease;
+        }
+        .drawer-close:hover { transform: rotate(90deg); color: var(--color-accent); }
+        .drawer-close::before, .drawer-close::after {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 28px; height: 1px;
+            background-color: currentColor;
+        }
+        .drawer-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+        .drawer-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+        .form-group { margin-bottom: 30px; }
+        .form-label { display: block; font-family: var(--font-serif); color: var(--color-accent); font-size: 0.85rem; margin-bottom: 10px; letter-spacing: 0.15em; }
+        .form-input {
+            width: 100%; padding: 14px 18px; background-color: rgba(255,255,255,0.03);
+            border: 1px solid var(--color-border); color: var(--color-text);
+            font-family: var(--font-sans); transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        .form-input:focus { outline: none; border-color: var(--color-accent); background-color: rgba(255,255,255,0.06); }
+        
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1); opacity: 0.5; cursor: pointer;
+        }
+        select.form-input option { background-color: var(--color-surface); }
+
+        /* ==========================================================================
+           4. Header & Navigation
            ========================================================================== */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
@@ -139,7 +196,6 @@
         }
         .nav-overlay.active { visibility: visible; opacity: 1; transition: visibility 0s, opacity 0.5s ease; }
         
-        /* 完璧な 3x2 グリッドレイアウト */
         .nav-list { 
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -159,12 +215,11 @@
             font-size: clamp(1.1rem, 3.5vw, 1.8rem); 
             letter-spacing: 0.1em; transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
-            white-space: nowrap;
         }
         .nav-overlay.active .nav-link { transform: translateY(0); }
 
         /* ==========================================================================
-           4. Hero Section
+           5. Hero Section
            ========================================================================== */
         .hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; justify-content: center; align-items: center; }
         .hero-bg-wrap { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
@@ -177,7 +232,7 @@
         .hero-subtitle { font-size: var(--font-base); letter-spacing: 0.3em; margin-top: 1rem; color: var(--color-accent); text-align: center; }
 
         /* ==========================================================================
-           5. Section Styles
+           6. Layout Components
            ========================================================================== */
         .section-header { text-align: center; margin-bottom: var(--space-md); }
         .section-title-en { font-family: var(--font-sans); font-size: var(--font-xs); color: var(--color-accent); letter-spacing: 0.3em; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
@@ -240,6 +295,65 @@
 </head>
 <body>
 
+  <!-- Reservation Drawer (Mini-mal Version) -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <div class="res-drawer" id="res-drawer">
+      <button class="drawer-close" id="drawer-close" aria-label="Close Reservation Form"></button>
+      
+      <div class="section-header" style="margin-bottom: 40px;">
+          <span class="section-title-en">Reservation</span>
+          <h2 class="section-title-ja text-serif" style="font-size: 1.8rem;">ご予約申し込み</h2>
+      </div>
+
+      <p class="text-serif" style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 40px; text-align: center; line-height: 1.8;">
+          <span class="text-unit">必要事項を</span><span class="text-unit">ご入力ください。</span><br>
+          <span class="text-unit">店舗より</span><span class="text-unit">確認のメールを</span><span class="text-unit">差し上げます。</span>
+      </p>
+
+      <form action="#" method="POST" id="reservation-form">
+          <div class="form-group">
+              <label class="form-label">ご来店希望日</label>
+              <input type="date" class="form-input" id="res-date" required>
+              <p style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 8px;">※一週間後よりご予約を承ります。</p>
+          </div>
+          <div class="form-group">
+              <label class="form-label">人数</label>
+              <select class="form-input">
+                  <option>1名様</option>
+                  <option selected>2名様</option>
+                  <option>3名様</option>
+                  <option>4名様</option>
+                  <option>5名様以上（お電話にて承ります）</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label class="form-label">ご希望の時間</label>
+              <select class="form-input">
+                  <option>11:30</option>
+                  <option>12:00</option>
+                  <option>18:00</option>
+                  <option>19:00</option>
+                  <option>20:00</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label class="form-label">お名前（フルネーム）</label>
+              <input type="text" class="form-input" placeholder="例：銀座 聖藍" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label">メールアドレス</label>
+              <input type="email" class="form-input" placeholder="example@mail.com" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label">ご要望事項（アレルギー等）</label>
+              <textarea class="form-input" rows="4" style="resize: none;" placeholder="アレルギーや苦手な食材がございましたらご記入ください"></textarea>
+          </div>
+          <div class="mgt40">
+              <button type="submit" class="elegant-btn" style="width: 100%; background-color: var(--color-accent); color: #000; border: none; font-weight: 600;">予約を申し込む</button>
+          </div>
+      </form>
+  </div>
+
   <!-- Header & Nav -->
   <header id="header">
       <a href="index.html" class="header-logo">銀座 聖藍</a>
@@ -252,7 +366,6 @@
 
   <nav class="nav-overlay" id="nav-overlay">
       <ul class="nav-list">
-          <!-- HOMEを削除し、完璧な3x2グリッドを実現 -->
           <li class="nav-item"><a href="about.html" class="nav-link">店舗案内</a></li>
           <li class="nav-item"><a href="concept.html" class="nav-link">こだわり</a></li>
           <li class="nav-item"><a href="menu.html" class="nav-link">お品書き</a></li>
@@ -271,7 +384,10 @@
           <div class="hero-overlay"></div>
           <div style="text-align: center;">
               <h1 class="hero-title text-serif reveal-fade" id="hero-title">銀座 聖藍</h1>
-              <p class="hero-subtitle text-serif reveal-fade">完全予約制<br> 銀座の静謐空間で堪能する至福の鮨</p>
+              <p class="hero-subtitle text-serif reveal-fade">
+                  <span class="text-unit">完全予約制</span><br>
+                  <span class="text-unit">銀座の静謐空間で</span><span class="text-unit">堪能する</span><span class="text-unit">至福の鮨</span>
+              </p>
           </div>
       </section>
 
@@ -284,11 +400,16 @@
               </div>
               <div class="split-layout">
                   <div class="split-text-box reveal-up">
-                      <h3 class="split-title text-serif">完全予約制<br>磨き抜かれた匠の技で<br>極上のひとときを</h3>
+                      <h3 class="split-title text-serif">
+                          <span class="text-unit">完全予約制</span><br>
+                          <span class="text-unit">磨き抜かれた</span><span class="text-unit">匠の技で</span><br>
+                          <span class="text-unit">極上のひとときを</span>
+                      </h3>
                       <p class="split-desc text-serif">
-                          銀座 聖藍は、東京都中央区銀座にある寿司店です。<br>
-                          こだわりの食材と、磨き抜かれた匠の技をご堪能ください。<br>
-                          お席は白木が香るカウンター席のほか、<br>ご接待にも最適な個室をご用意しております。
+                          <span class="text-unit">銀座 聖藍は、</span><span class="text-unit">東京都中央区銀座に</span><span class="text-unit">ある寿司店です。</span><br>
+                          <span class="text-unit">こだわりの食材と、</span><span class="text-unit">磨き抜かれた</span><span class="text-unit">匠の技を</span><span class="text-unit">ご堪能ください。</span><br>
+                          <span class="text-unit">お席は白木が</span><span class="text-unit">香るカウンター席のほか、</span><br>
+                          <span class="text-unit">ご接待にも最適な</span><span class="text-unit">個室をご用意しております。</span>
                       </p>
                       <div class="mgt40">
                           <a href="about.html" class="elegant-btn">詳しくはこちら</a>
@@ -310,11 +431,14 @@
               </div>
               <div class="split-layout reverse">
                   <div class="split-text-box reveal-up">
-                      <h3 class="split-title text-serif">厳選して提供しています。</h3>
+                      <h3 class="split-title text-serif">
+                          <span class="text-unit">厳選して</span><span class="text-unit">提供しています。</span>
+                      </h3>
                       <p class="split-desc text-serif">
-                          にぎりやおつまみで使う食材は、<br>
-                          毎朝職人が自ら市場に行って良いものを選び仕入れています。<br>
-                          四季の移ろいを感じる旬の魚介を取り入れているのも、<br>当店の絶対的なこだわりです。
+                          <span class="text-unit">にぎりや</span><span class="text-unit">おつまみで使う</span><span class="text-unit">食材は、</span><br>
+                          <span class="text-unit">毎朝職人が自ら市場に</span><span class="text-unit">行って良いものを</span><span class="text-unit">選び仕入れています。</span><br>
+                          <span class="text-unit">四季の移ろいを</span><span class="text-unit">感じる旬の魚介を</span><span class="text-unit">取り入れているのも、</span><br>
+                          <span class="text-unit">当店の絶対的な</span><span class="text-unit">こだわりです。</span>
                       </p>
                       <div class="mgt40">
                           <a href="concept.html" class="elegant-btn">詳しくはこちら</a>
@@ -335,9 +459,10 @@
                   <h2 class="section-title-ja text-serif">お品書き</h2>
               </div>
               <p class="menu-text text-serif reveal-up">
-                  お昼のコースと夜のコースをご用意しています。<br>
-                  内容はおまかせになり、その日の仕入れで決まります。<br>
-                  お料理に寄り添うお飲み物も各種揃えておりますので、<br>お気軽にお尋ねください。
+                  <span class="text-unit">お昼のコースと</span><span class="text-unit">夜のコースを</span><span class="text-unit">ご用意しています。</span><br>
+                  <span class="text-unit">内容はおまかせになり、</span><span class="text-unit">その日の仕入れで決まります。</span><br>
+                  <span class="text-unit">お料理に寄り添う</span><span class="text-unit">お飲み物も各種</span><span class="text-unit">揃えておりますので、</span><br>
+                  <span class="text-unit">お気軽にお尋ねください。</span>
               </p>
               
               <div class="photo-grid mgt40">
@@ -397,7 +522,8 @@
               <div class="text-center reveal-up">
                   <p class="text-serif" style="font-size: 1.5rem; letter-spacing: 0.15em; margin-bottom: 10px;">ご予約・お問い合わせ</p>
                   <p class="text-serif text-accent" style="font-size: 2.5rem; margin-bottom: 20px;"><a href="tel:03-3572-6555">03-3572-6555</a></p>
-                  <a href="#" class="elegant-btn" style="background-color: var(--color-accent); color: #000;">Webからのご予約はこちら</a>
+                  
+                  <button id="open-res-btn" class="elegant-btn" style="background-color: var(--color-accent); color: #000; border: none; font-weight: 600;">Webからのご予約はこちら</button>
               </div>
 
               <table class="info-table reveal-up mgt40">
@@ -452,16 +578,27 @@
       document.addEventListener("DOMContentLoaded", () => {
           gsap.registerPlugin(ScrollTrigger);
 
-          gsap.to("#hero-title, .hero-subtitle", {
-              opacity: 1, y: 0, duration: 1.5, stagger: 0.3, ease: "power3.out", delay: 0.5
-          });
+          // --- 1. 日付の制限（1週間後以降） ---
+          const dateInput = document.getElementById('res-date');
+          const dateLimit = new Date();
+          dateLimit.setDate(dateLimit.getDate() + 7);
+          
+          const yyyy = dateLimit.getFullYear();
+          const mm = String(dateLimit.getMonth() + 1).padStart(2, '0');
+          const dd = String(dateLimit.getDate()).padStart(2, '0');
+          const formattedDate = `${yyyy}-${mm}-${dd}`;
+          
+          dateInput.value = formattedDate;
+          dateInput.min = formattedDate;
 
+          // Header Scroll Effect
           const header = document.getElementById('header');
           window.addEventListener('scroll', () => {
               if (window.scrollY > 50) header.classList.add('scrolled');
               else header.classList.remove('scrolled');
           });
 
+          // Navigation Toggle
           const menuBtn = document.getElementById('menu-btn');
           const navOverlay = document.getElementById('nav-overlay');
           const navLinks = document.querySelectorAll('.nav-link');
@@ -476,6 +613,33 @@
 
           menuBtn.addEventListener('click', toggleMenu);
           navLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+          // Reservation Drawer Logic
+          const openResBtn = document.getElementById('open-res-btn');
+          const resDrawer = document.getElementById('res-drawer');
+          const drawerOverlay = document.getElementById('drawer-overlay');
+          const drawerClose = document.getElementById('drawer-close');
+
+          const openDrawer = () => {
+              resDrawer.classList.add('active');
+              drawerOverlay.classList.add('active');
+              document.body.classList.add('no-scroll');
+          };
+
+          const closeDrawer = () => {
+              resDrawer.classList.remove('active');
+              drawerOverlay.classList.remove('active');
+              document.body.classList.remove('no-scroll');
+          };
+
+          openResBtn.addEventListener('click', openDrawer);
+          drawerOverlay.addEventListener('click', closeDrawer);
+          drawerClose.addEventListener('click', closeDrawer);
+
+          // --- GSAP Animations ---
+          gsap.to("#hero-title, .hero-subtitle", {
+              opacity: 1, y: 0, duration: 1.5, stagger: 0.3, ease: "power3.out", delay: 0.5
+          });
 
           gsap.to("#hero-bg", {
               yPercent: 15, ease: "none",
